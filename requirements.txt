@@ -1,0 +1,14 @@
+python == 3.8.13
+pytest
+pylint
+ipdb
+jupyterlab
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+nibabel
+tensorflow
+keras
+#packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
