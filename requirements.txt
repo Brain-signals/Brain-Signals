@@ -1,4 +1,3 @@
-python == 3.8.13
 pytest
 pylint
 ipdb
@@ -11,4 +10,9 @@ scikit-learn
 nibabel
 tensorflow
 keras
+
+tensorflow-macos==2.8.0; sys_platform == 'darwin' and 'ARM' in platform_version
+tensorflow==2.8.0; sys_platform == 'darwin' and 'ARM' not in platform_version
+tensorflow==2.8.0; sys_platform != 'darwin'
+
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
