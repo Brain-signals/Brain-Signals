@@ -14,5 +14,6 @@ scikit-learn
 nibabel
 tensorflow
 keras
+google-cloud-storage
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master

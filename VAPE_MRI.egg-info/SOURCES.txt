@@ -1,0 +1,7 @@
+setup.py
+VAPE_MRI.egg-info/PKG-INFO
+VAPE_MRI.egg-info/SOURCES.txt
+VAPE_MRI.egg-info/dependency_links.txt
+VAPE_MRI.egg-info/not-zip-safe
+VAPE_MRI.egg-info/requires.txt
+VAPE_MRI.egg-info/top_level.txt
