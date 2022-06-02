@@ -15,5 +15,9 @@ nibabel
 tensorflow
 keras
 google-cloud-storage
+nibabel
+opencv-python
+imutils
+imageio
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master

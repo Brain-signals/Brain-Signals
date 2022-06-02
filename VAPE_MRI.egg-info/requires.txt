@@ -11,6 +11,10 @@ nibabel
 tensorflow
 keras
 google-cloud-storage
+nibabel
+opencv-python
+imutils
+imageio
 
 [:sys_platform != "darwin"]
 tensorflow==2.8.0
