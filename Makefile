@@ -1,3 +1,6 @@
+
+CONFIRM=Y
+
 default:
 	@echo "Please specify a make command. help command might be usefull"
 
@@ -42,3 +45,17 @@ GCP_stop:
 
 GCP_connect:
 	@gcloud compute ssh ${VM_INSTANCE}
+
+DL_datasets:
+	@gsutil -m cp -r gs://vape-mri/processed_datasets ${DATASETS_PATH}
+
+# DL_datasets:
+# 	@echo "This command will delete all files in ${DATASETS_PATH}"
+# 	@echo "And download the complete vape-mri dataset from google cloud storage\n"
+
+# 	@read -p "Please confirm : Y/n ? " -n 1 -r
+# 	@if ((${REPLY} = ${CONFIRM})); then \
+# 		echo "yes"; \
+# 	else \
+# 		echo "no"; \
+# 	fi
