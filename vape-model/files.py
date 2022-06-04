@@ -42,7 +42,7 @@ def open_dataset(dataset_name,verbose=0):
     # transform that list in an array
     if verbose == 1:
         print('.nii files processed. Compiling to X (might take a moment)')
-    X = np.array(X_tmp)
+    X = np.array(X_tmp, dtype='object')
 
     # create an array of the diagnostics
     if verbose == 1:

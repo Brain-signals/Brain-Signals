@@ -19,5 +19,7 @@ nibabel
 opencv-python
 imutils
 imageio
+scikit-image
+plotly
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master

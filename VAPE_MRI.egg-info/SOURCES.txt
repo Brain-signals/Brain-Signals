@@ -5,3 +5,7 @@ VAPE_MRI.egg-info/dependency_links.txt
 VAPE_MRI.egg-info/not-zip-safe
 VAPE_MRI.egg-info/requires.txt
 VAPE_MRI.egg-info/top_level.txt
+vape-model/__init__.py
+vape-model/files.py
+vape-model/model.py
+vape-model/utils.py
