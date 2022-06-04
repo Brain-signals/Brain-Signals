@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from scipy import ndimage
 
-# def scan_folder(path):
+
 
 def scan_folder_for_nii(path):
 
@@ -15,14 +15,20 @@ def scan_folder_for_nii(path):
             file_names.append(file_name)
     return file_names
 
+
+
 def NII_to_3Darray(path):
     NII = nib.load(path).get_fdata()
     return NII
+
+
 
 def NII_to_layer(path,slicing=0.6):
     NII = nib.load(path).get_fdata()
     layer = NII[:,:,int(NII.shape[2]*slicing)]
     return np.array(layer)
+
+
 
 def resize_volume(volume):
 
@@ -48,6 +54,8 @@ def resize_volume(volume):
                              depth_factor), order=1)
     return volume
 
+
+
 def normalize(volume):
     """Normalize the volume"""
     min = 0
@@ -57,6 +65,8 @@ def normalize(volume):
     volume = (volume - min) / (max - min)
     volume = volume.astype("float32")
     return volume
+
+
 
 def open_dataset(dataset_name,verbose=0):
 

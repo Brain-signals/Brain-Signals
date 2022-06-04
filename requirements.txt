@@ -22,5 +22,10 @@ imageio
 scikit-image
 plotly
 scipy
+<<<<<<< HEAD
+=======
+cv2
+h5py
+>>>>>>> 9d8983b1279b506d1d7bbce6ccabea84871b8067
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
