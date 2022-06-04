@@ -21,5 +21,8 @@ imutils
 imageio
 scikit-image
 plotly
+scipy
+cv2
+h5py
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
