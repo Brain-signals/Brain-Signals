@@ -35,6 +35,8 @@ target_res= int(os.environ.get("TARGET_RES"))
 
 def resize_and_pad(volume):
 
+    target_res = int(os.environ.get("TARGET_RES"))
+
     # Get current shape
     current_width = volume.shape[0]
     current_length = volume.shape[1]
