@@ -9,11 +9,8 @@ jupyterlab
 numpy
 pandas
 matplotlib
-seaborn
 scikit-learn
-nibabel
 tensorflow
-keras
 google-cloud-storage
 nibabel
 opencv-python
@@ -22,5 +19,6 @@ imageio
 scikit-image
 plotly
 scipy
+cv2
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
