@@ -19,6 +19,5 @@ imageio
 scikit-image
 plotly
 scipy
-cv2
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
