@@ -17,6 +17,7 @@ imutils
 imageio
 scikit-image
 plotly
+scipy
 
 [:sys_platform != "darwin"]
 tensorflow==2.8.0
