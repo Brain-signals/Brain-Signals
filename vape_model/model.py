@@ -22,16 +22,25 @@ def initialize_model(width, length, depth):
     model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Conv3D(
+        filters=64,
+        kernel_size=3,
+        activation="relu",))
+    model.add(layers.MaxPool3D(pool_size=2))
+
+    model.add(layers.Conv3D(
         filters=32,
         kernel_size=3,
         activation="relu",))
     model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=1, activation="sigmoid"))
+    model.add(layers.Dense(units=100, activation="relu"))
+    model.add(layers.Dense(units=50, activation="relu"))
+    model.add(layers.Dense(units=20, activation="relu"))
+    model.add(layers.Dense(units=3, activation="softmax"))
 
     model.compile(
-      loss="binary_crossentropy",
+      loss="categorical_crossentropy",
       optimizer='adam',
       metrics=["accuracy"],
     )

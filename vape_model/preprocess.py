@@ -40,8 +40,9 @@ def get_brain_contour_nii(img):
 
 
 
-def crop_volume(volume):
+def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
 
+    roi = []
     left_cord = right_cord = bottom_cord = top_cord = []
     first_layer_checked = int(volume.shape[2] * 0.1)
     last_layer_checked = volume.shape[2] - int(volume.shape[2] * 0.1)
@@ -53,10 +54,12 @@ def crop_volume(volume):
         if np.max(norm_vol[:,:,layer]) > 55:
             left, bottom, right, top = compute_roi(get_brain_contour_nii(norm_vol[:,:,layer]))
 
+            area = (right-left) * (top-bottom)
             left_cord.append(left)
             right_cord.append(right)
             bottom_cord.append(bottom)
             top_cord.append(top)
+            roi.append(area)
 
     min_left = np.min(left_cord)
     max_right = np.max(right_cord)
@@ -66,26 +69,15 @@ def crop_volume(volume):
     #compute the crop
     volume = volume[min_bottom : max_top, min_left : max_right, :]
 
-    bottom_indexes = []
-    top_indexes = []
+    index_max_area = roi.index(np.max(area))
+    top_z = index_max_area + int(volume.shape[2]*slicing_up)
+    bottom_z = index_max_area - int(volume.shape[2]*slicing_bot)
 
-    norm_vol = cv2.normalize(volume, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
+    if top_z > volume.shape[2]:
+      top_z = volume.shape[2] - int(volume.shape[2]*0.2)
 
-    for bottom_index in range(int(volume.shape[2]/2)):
-        if np.max(norm_vol[:,:,bottom_index]) < 50:
-            bottom_indexes.append(bottom_index)
+    return volume[:, :, bottom_z:top_z]
 
-    for top_index in range(int(volume.shape[2]/2), volume.shape[2]):
-        if np.max(norm_vol[:,:,top_index]) < 50:
-            top_indexes.append(top_index)
-
-    if len(bottom_index) == 0:
-      crop_index_bot=int(volume.shape[2]*0.15)
-      volume =volume[:, :, crop_index_bot:np.min(top_index)]
-    else:
-      volume = volume[:, :, np.max(bottom_index):np.min(top_index)]
-
-    return volume
 
 
 

@@ -51,11 +51,8 @@ def open_dataset(dataset_name,verbose=0):
             n += 1
 
         volume = NII_to_3Darray(path+file_name)
-        print(volume.shape)
         volume = crop_volume(volume)
-        print(volume.shape)
         volume = resize_and_pad(volume)
-        print(volume.shape)
 
         X_tmp.append(volume)
 

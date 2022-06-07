@@ -5,14 +5,19 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import os
 from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.preprocessing import OneHotEncoder
 
-X1,y1 = open_dataset('MRI_PD_vanicek_control',verbose=1)
-X2,y2 = open_dataset('MRI_PD_vanicek_parkinsons',verbose=1)
+X1,y1 = open_dataset('MRI_PD_vanicek_control', verbose=1)
+X2,y2 = open_dataset('MRI_PD_vanicek_parkinsons', verbose=1)
+X3,y3 = open_dataset('Wonderwall', verbose=1)
+X4,y4 = open_dataset('MRI_PD_1', verbose=1)
 
-X = np.concatenate((X1,X2))
-y = pd.concat((y1,y2),ignore_index=True)
+X = np.concatenate((X1,X2,X3,X4))
+y = pd.concat((y1,y2,y3,y4),ignore_index=True)
 
-y_encoded=np.array([ 0 if i=='Healthy' else 1 for i in y['diagnostic']])
+enc = OneHotEncoder(sparse = False)
+enc.fit(y[['diagnostic']])
+y_encoded = enc.transform(y[['diagnostic']]).astype('int8')
 
 X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.30)
 
