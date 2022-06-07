@@ -4,6 +4,7 @@ import os
 from scipy import ndimage
 
 
+
 def compute_roi(contour):
     l = [dots.tolist()[0] for dots in contour]
     xs, ys = zip(*l)
@@ -131,3 +132,7 @@ def resize_and_pad(volume):
 def normalize_vol(X):
     """Normalize the volume"""
     return cv2.normalize(X, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
+
+
+
+
