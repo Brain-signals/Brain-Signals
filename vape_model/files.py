@@ -3,7 +3,7 @@ import numpy as np
 import os
 import pandas as pd
 from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol
-
+import time
 
 
 def scan_folder_for_nii(path):
@@ -18,6 +18,7 @@ def scan_folder_for_nii(path):
 
 
 def NII_to_3Darray(path):
+    print(path)
     NII = nib.load(path).get_fdata()
     return NII
 
@@ -30,9 +31,11 @@ def NII_to_layer(path,slicing=0.6):
 
 
 
-def open_dataset(dataset_name,verbose=0):
+def open_dataset(dataset_name,verbose=0,limit=0):
 
     # will fetch the infos.csv in the specified dataset's folder
+
+    start = time.perf_counter()
 
     datasets_path = os.environ.get("DATASETS_PATH")
     # datasets_path = '/content/drive/MyDrive/6- Bootcamp/VAPE - Brain/Datasets for 3D/'
@@ -41,6 +44,8 @@ def open_dataset(dataset_name,verbose=0):
     info_path = path+'infos/'
 
     file_names = pd.read_csv(info_path+dataset_name+'.csv')
+    if limit != 0 :
+        file_names = file_names.sample(frac=1).head(limit)
 
     # put every .nii transformed in a list of array
     X_tmp = []
@@ -49,6 +54,8 @@ def open_dataset(dataset_name,verbose=0):
         if verbose == 1:
             print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
             n += 1
+
+        print(path+file_name)
 
         volume = NII_to_3Darray(path+file_name)
         volume = crop_volume(volume)
@@ -65,8 +72,19 @@ def open_dataset(dataset_name,verbose=0):
     # create an array of the diagnostics
     if verbose == 1:
             print('Processing diagnostics...')
-    y = pd.read_csv(info_path+dataset_name+'.csv',index_col=0)
+
+    y_tmp = []
+    for diagnostic in file_names['diagnostic']:
+        y_tmp.append = diagnostic
+    y = pd.DataFrame(y_tmp)
+
+    end = time.perf_counter()
 
     if verbose == 1:
             print('Diagnostics processed')
+            print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
+
+
     return X,y
+
+x,y = open_dataset("MRI_MS",verbose=1)

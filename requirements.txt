@@ -18,5 +18,9 @@ imageio
 scikit-image
 plotly
 scipy
+psycopg2-binary
+mlflow
+prefect
+colorama
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
