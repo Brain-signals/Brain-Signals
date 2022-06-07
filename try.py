@@ -7,13 +7,16 @@ import os
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import OneHotEncoder
 
-X1,y1 = open_dataset('MRI_PD_vanicek_control', verbose=1)
-X2,y2 = open_dataset('MRI_PD_vanicek_parkinsons', verbose=1)
-X3,y3 = open_dataset('Wonderwall', verbose=1)
-X4,y4 = open_dataset('MRI_PD_1', verbose=1)
+X1,y1 = open_dataset('MRI_PD_vanicek_control', verbose=1, limit=20)
+X2,y2 = open_dataset('MRI_PD_vanicek_parkinsons', verbose=1, limit=50)
+X3,y3 = open_dataset('Wonderwall_alzheimers', verbose=1, limit=50)
+X4,y4 = open_dataset('Wonderwall_control', verbose=1, limit=15)
+X5,y5 = open_dataset('MRI_PD_1_control', verbose=1, limit=15)
+X6,y6 = open_dataset('MRI_PD_1_parkinsons', verbose=1, limit=50)
 
-X = np.concatenate((X1,X2,X3,X4))
-y = pd.concat((y1,y2,y3,y4),ignore_index=True)
+
+X = np.concatenate((X1,X2,X3,X4,X5,X6))
+y = pd.concat((y1,y2,y3,y4,y5,y6),ignore_index=True)
 
 enc = OneHotEncoder(sparse = False)
 enc.fit(y[['diagnostic']])

@@ -1,5 +1,4 @@
 
-CONFIRM=Y
 
 default:
 	@echo "Please specify a make command. help command might be usefull"
