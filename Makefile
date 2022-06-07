@@ -45,8 +45,8 @@ GCP_stop:
 GCP_connect:
 	@gcloud compute ssh ${VM_INSTANCE}
 
-DL_datasets:
-	@gsutil -m cp -r gs://vape-mri/processed_datasets ${DATASETS_PATH}
+#DL_datasets:
+#	@gsutil -m cp -r gs://vape-mri/processed_datasets/ ${DATASETS_PATH}
 
 # DL_datasets:
 # 	@echo "This command will delete all files in ${DATASETS_PATH}"

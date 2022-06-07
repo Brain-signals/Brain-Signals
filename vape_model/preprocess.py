@@ -40,7 +40,7 @@ def get_brain_contour_nii(img):
 
 
 
-def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
+def crop_volume(volume,slicing_up=0.4,slicing_bot=0.4):
 
     roi = []
     left_cord = right_cord = bottom_cord = top_cord = []
