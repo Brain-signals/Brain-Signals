@@ -18,7 +18,6 @@ def scan_folder_for_nii(path):
 
 
 def NII_to_3Darray(path):
-    print(path)
     NII = nib.load(path).get_fdata()
     return NII
 
@@ -55,8 +54,6 @@ def open_dataset(dataset_name,verbose=0,limit=0):
             print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
             n += 1
 
-        print(path+file_name)
-
         volume = NII_to_3Darray(path+file_name)
         volume = crop_volume(volume)
         volume = resize_and_pad(volume)
@@ -75,16 +72,14 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
     y_tmp = []
     for diagnostic in file_names['diagnostic']:
-        y_tmp.append = diagnostic
+        y_tmp.append(diagnostic)
     y = pd.DataFrame(y_tmp)
 
     end = time.perf_counter()
 
     if verbose == 1:
-            print('Diagnostics processed')
-            print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
+        print('Diagnostics processed')
+        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
 
 
     return X,y
-
-x,y = open_dataset("MRI_MS",verbose=1)

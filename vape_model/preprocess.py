@@ -69,6 +69,7 @@ def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
     #compute the crop
     volume = volume[min_bottom : max_top, min_left : max_right, :]
     # print('volume shape is',volume.shape)
+    return volume
 
     '''
     index_max_area = roi.index(np.max(area))
@@ -93,7 +94,6 @@ def resize_and_pad(volume):
     target_res = int(os.environ.get("TARGET_RES"))
 
     # Get current shape
-    print(volume)
     current_width = volume.shape[0]
     current_length = volume.shape[1]
     current_depth = volume.shape[2]
