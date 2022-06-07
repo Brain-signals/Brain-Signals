@@ -21,6 +21,7 @@ scipy
 psycopg2-binary
 mlflow
 prefect
+<<<<<<< HEAD
 colorama
 time
 sklearn
@@ -29,5 +30,7 @@ colorama
 prefect
 prefect[viz]
 psycopg2-binary
+=======
+>>>>>>> 15d1db6de8807934e8b33c5557d7d0cf07f6ce11
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
