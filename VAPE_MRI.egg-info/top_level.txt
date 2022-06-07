@@ -1,1 +1,1 @@
-vape-model
+vape_model

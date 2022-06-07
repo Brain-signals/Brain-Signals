@@ -2,8 +2,7 @@ import nibabel as nib
 import numpy as np
 import os
 import pandas as pd
-from scipy import ndimage
-import cv2
+from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol
 
 
 
@@ -31,53 +30,6 @@ def NII_to_layer(path,slicing=0.6):
 
 
 
-target_res= int(os.environ.get("TARGET_RES"))
-
-def resize_and_pad(volume):
-
-    target_res = int(os.environ.get("TARGET_RES"))
-
-    # Get current shape
-    current_width = volume.shape[0]
-    current_length = volume.shape[1]
-    current_depth = volume.shape[2]
-
-    # Compute shape factor
-    width_factor = 1 / ( current_width / target_res )
-    length_factor = 1 / ( current_length / target_res )
-    depth_factor = 1 / ( current_depth / target_res )
-
-    factor = min(width_factor,length_factor,depth_factor)
-
-    # Zoom to the target, based on the biggest axis
-    volume = ndimage.zoom(volume, (factor, factor, factor))
-
-    # and pad zeros until wanted shape
-
-    def get_padding(axis_shape):
-        zeros_to_add = target_res-axis_shape
-        if zeros_to_add%2 == 0:
-            padding = (int(zeros_to_add/2),int(zeros_to_add/2))
-        else:
-            padding = (int(zeros_to_add//2),int(zeros_to_add//2+1))
-        return padding
-
-    pad_width = get_padding(volume.shape[0])
-    pad_length = get_padding(volume.shape[1])
-    pad_depth = get_padding(volume.shape[2])
-
-    volume = np.pad(volume, (pad_width, pad_length, pad_depth), mode='minimum')
-
-    return volume
-
-
-
-def normalize(X):
-    """Normalize the volume"""
-    cv2.normalize(X, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
-
-
-
 def open_dataset(dataset_name,verbose=0):
 
     # will fetch the infos.csv in the specified dataset's folder
@@ -99,7 +51,11 @@ def open_dataset(dataset_name,verbose=0):
             n += 1
 
         volume = NII_to_3Darray(path+file_name)
+        print(volume.shape)
+        volume = crop_volume(volume)
+        print(volume.shape)
         volume = resize_and_pad(volume)
+        print(volume.shape)
 
         X_tmp.append(volume)
 
@@ -107,7 +63,7 @@ def open_dataset(dataset_name,verbose=0):
     if verbose == 1:
         print('.nii files processed. Compiling to X (might take a moment)')
     X = np.array(X_tmp)
-    X = cv2.normalize(X, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
+    X = normalize_vol(X)
 
     # create an array of the diagnostics
     if verbose == 1:
