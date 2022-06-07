@@ -70,16 +70,14 @@ def open_dataset(dataset_name,verbose=0,limit=0):
     if verbose == 1:
             print('Processing diagnostics...')
 
-    y_tmp = []
-    for diagnostic in file_names['diagnostic']:
-        y_tmp.append(diagnostic)
-    y = pd.DataFrame(y_tmp)
+
+    y = file_names[['diagnostic']]
 
     end = time.perf_counter()
 
     if verbose == 1:
         print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
+        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
 
 
     return X,y

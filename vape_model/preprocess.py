@@ -69,9 +69,7 @@ def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
     #compute the crop
     volume = volume[min_bottom : max_top, min_left : max_right, :]
     # print('volume shape is',volume.shape)
-    return volume
 
-    '''
     index_max_area = roi.index(np.max(area))
     top_z = index_max_area + int(volume.shape[2]*slicing_up)
     bottom_z = index_max_area - int(volume.shape[2]*slicing_bot)
@@ -84,7 +82,6 @@ def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
       bottom_z = 0 + int(volume.shape[2]*0.2)
 
     return volume[:, :, bottom_z:top_z]
-    '''
 
 
 
