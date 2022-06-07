@@ -43,8 +43,8 @@ def get_brain_contour_nii(img):
 def crop_volume(volume):
 
     left_cord = right_cord = bottom_cord = top_cord = []
-    first_layer_checked = round(volume.shape[2] * 0.1)
-    last_layer_checked = volume.shape[2] - round(volume.shape[2] * 0.1)
+    first_layer_checked = int(volume.shape[2] * 0.1)
+    last_layer_checked = volume.shape[2] - int(volume.shape[2] * 0.1)
 
     norm_vol = cv2.normalize(volume, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
 
@@ -71,15 +71,20 @@ def crop_volume(volume):
 
     norm_vol = cv2.normalize(volume, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
 
-    for bottom_index in range(round(volume.shape[2]/2)):
+    for bottom_index in range(int(volume.shape[2]/2)):
         if np.max(norm_vol[:,:,bottom_index]) < 50:
             bottom_indexes.append(bottom_index)
 
-    for top_index in range(round(volume.shape[2]/2), volume.shape[2]):
+    for top_index in range(int(volume.shape[2]/2), volume.shape[2]):
         if np.max(norm_vol[:,:,top_index]) < 50:
             top_indexes.append(top_index)
 
-    volume = volume[:, :, np.max(bottom_indexes) : np.min(top_indexes)]
+    if len(bottom_index) == 0:
+      crop_index_bot=int(volume.shape[2]*0.15)
+      volume =volume[:, :, crop_index_bot:np.min(top_index)]
+    else:
+      volume = volume[:, :, np.max(bottom_index):np.min(top_index)]
+
     return volume
 
 
