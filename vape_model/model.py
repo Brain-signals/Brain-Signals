@@ -86,20 +86,12 @@ def encoding_y(y):
     return y_encoded
 
 
-def evaluate_model(model: Model,
-                   X_test: np.ndarray,
-                   y_test: np.ndarray
-                   ):
+def evaluate_model(model,X_test,y_test):
     """
     Evaluate trained model performance on dataset
     """
 
-    metrics_eval = model.evaluate(
-        x=X_test,
-        y=y_test,
-        verbose=1,
-        # callbacks=None,
-        return_dict=True)
-
+    metrics_eval = model.evaluate(x=X_test,y=y_test,
+        verbose=1,return_dict=True)
 
     return metrics_eval

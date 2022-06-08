@@ -10,11 +10,13 @@ def predict_from_volume(volume):
     model = load_model(model_name=model_name)
     os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
 
-    volume = crop_volume(volume)
-    volume = resize_and_pad(volume)
-    X_processed = np.array(volume)
-    X_processed = normalize_vol(X_processed)
+    vol_crop = crop_volume(volume)
+    vol_res = resize_and_pad(vol_crop)
+    X_tmp = []
+    X_tmp.append(vol_res)
+    X = np.array(X_tmp)
+    X_processed = normalize_vol(X)
 
     y_pred = model.predict(X_processed)
 
-    return 'ok'
+    return np.round(y_pred,3)

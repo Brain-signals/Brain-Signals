@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import os
 
-def preprocess_and_train(eval=True):
+def preprocess_and_train(eval=False):
     """
     Load data in memory, clean and preprocess it, train a Keras model on it,
     save the model, and finally compute & save a performance metric
@@ -17,10 +17,8 @@ def preprocess_and_train(eval=True):
     """
 
     chosen_datasets = [
-        ('Controls',5),
-        ('Wonderwall_alzheimers',5),
-        ('Wonderwall_control',5),
-        ('MRI_PD1_parkinsons',5)
+        ('Controls',2),
+        ('Wonderwall_alzheimers',2),
     ]
 
     # unchosen_datasets :
@@ -28,14 +26,16 @@ def preprocess_and_train(eval=True):
     # ('MRI_PD_vanicek_control',0),
     # ('MRI_PD_vanicek_parkinsons',0),
     # ('MRI_PD1_control',0),
+    # ('Wonderwall_control',2),
+    # ('MRI_PD1_parkinsons',2)
 
 
     # model params
-    patience = 2
+    patience = 1
     validation_split = 0.3
     learning_rate = 0.001
-    batch_size = 16
-    epochs = 5
+    batch_size = 8
+    epochs = 1
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -62,7 +62,7 @@ def preprocess_and_train(eval=True):
                              learning_rate=learning_rate)
 
     #train model
-    model, history= train_model(model,
+    model, history = train_model(model,
                                 X_train, y_train,
                                 patience=patience,
                                 monitor=es_monitor,
@@ -72,7 +72,10 @@ def preprocess_and_train(eval=True):
                                 verbose=1)
 
     # compute val_metrics
-    metrics = history.history
+    best_epoch = max(history.epoch) - patience
+    metrics = {}
+    for metric,score in history.history.items():
+        metrics[metric] = score[best_epoch]
 
     # save model
     params = dict(
@@ -95,10 +98,12 @@ def preprocess_and_train(eval=True):
                     metrics=metrics)
 
     print(f"\nModel uploaded on mlflow")
+    print(model)
 
     if eval:
-        metrics_eval = evaluate_model(X_test,y_test,model=model)
-        print(metrics_eval)
+        metrics_eval = model.evaluate(x=X_test,y=y_test,verbose=1,return_dict=True)
+        for metric,score in metrics_eval.items():
+            print(f'{metric} is {score}')
 
     pass
 
