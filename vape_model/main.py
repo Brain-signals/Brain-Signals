@@ -18,8 +18,8 @@ def preprocess_and_train(eval=True):
 
     chosen_datasets = [
         ('Controls',40),
-        ('Wonderwall_alzheimers',100),
-        ('Wonderwall_control',24)
+        ('Wonderwall_alzheimers',60),
+        ('Wonderwall_control',20)
     ]
 
     # unchosen_datasets :
@@ -86,7 +86,12 @@ def preprocess_and_train(eval=True):
         # package behavior
         context="preprocess and train")
 
-    model_to_mlflow(model=model, params=params, metrics=metrics)
+    model_name = os.environ.get("MLFLOW_MODEL_NAME")
+
+    model_to_mlflow(model=model,
+                    model_name=model_name,
+                    params=params,
+                    metrics=metrics)
 
     print(f"\nModel uploaded on mlflow")
 
@@ -96,5 +101,4 @@ def preprocess_and_train(eval=True):
     pass
 
 if __name__ == '__main__':
-    dqsd = 1562
     preprocess_and_train()
