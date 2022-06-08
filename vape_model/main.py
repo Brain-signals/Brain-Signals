@@ -17,17 +17,17 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',2),
-        ('Wonderwall_alzheimers',2),
+        ('Controls',15),
+        ('Wonderwall_control',15),
+        ('MRI_PD_vanicek_control',15),
+        ('MRI_PD1_control',15),
+        ('MRI_PD_vanicek_parkinsons',19),
+        ('Wonderwall_alzheimers',40),
+        ('MRI_PD1_parkinsons',21)
+        ('MRI_MS',40),
     ]
 
     # unchosen_datasets :
-    # ('MRI_MS',0),
-    # ('MRI_PD_vanicek_control',0),
-    # ('MRI_PD_vanicek_parkinsons',0),
-    # ('MRI_PD1_control',0),
-    # ('Wonderwall_control',2),
-    # ('MRI_PD1_parkinsons',2)
 
 
     # model params
@@ -49,6 +49,7 @@ def preprocess_and_train(eval=False):
     #encode the y
     y_encoded=encoding_y(y)
     number_of_class = y_encoded.shape[1]
+    diagnostics = list(y['diagnostic'].unique())
 
     #split the dataset
     X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)
@@ -81,6 +82,7 @@ def preprocess_and_train(eval=False):
     params = dict(
         # hyper parameters
         used_dataset=chosen_datasets,
+        diagnostics=diagnostics,
         target_res=target_res,
         patience=patience,
         validation_split=validation_split,
