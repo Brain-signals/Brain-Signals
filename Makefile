@@ -45,6 +45,9 @@ GCP_stop:
 GCP_connect:
 	@gcloud compute ssh ${VM_INSTANCE}
 
+train_model:
+	@python -m main.py
+
 #DL_datasets:
 #	@gsutil -m cp -r gs://vape-mri/processed_datasets/ ${DATASETS_PATH}
 
@@ -58,6 +61,3 @@ GCP_connect:
 # 	else \
 # 		echo "no"; \
 # 	fi
-
-train_model:
-	@python -m main.py
