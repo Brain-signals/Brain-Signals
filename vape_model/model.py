@@ -56,6 +56,7 @@ def train_model(model: Model,
                 patience,
                 epochs,
                 monitor,
+                batch_size,
                 validation_split,
                 verbose):
 
@@ -70,6 +71,7 @@ def train_model(model: Model,
         X_train, y_train,
         validation_split=validation_split,
         epochs=epochs,
+        batch_size=batch_size,
         verbose=verbose,
         callbacks=[es],
     )

@@ -46,7 +46,7 @@ GCP_connect:
 	@gcloud compute ssh ${VM_INSTANCE}
 
 train_model:
-	@python -m main.py
+	@python -m vape_model.main
 
 #DL_datasets:
 #	@gsutil -m cp -r gs://vape-mri/processed_datasets/ ${DATASETS_PATH}

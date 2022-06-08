@@ -18,15 +18,16 @@ def preprocess_and_train(eval=True):
 
     chosen_datasets = [
         ('Controls',40),
-        ('MRI_PD_vanicek_control',0),
-        ('MRI_PD_vanicek_parkinsons',0),
-        ('MRI_PD1_control',0),
-        ('MRI_PD1_parkinsons',0),
         ('Wonderwall_alzheimers',100),
         ('Wonderwall_control',24)
     ]
 
-    # unchosen_datasets : ('MRI_MS',0),
+    # unchosen_datasets :
+    # ('MRI_MS',0),
+    # ('MRI_PD_vanicek_control',0),
+    # ('MRI_PD_vanicek_parkinsons',0),
+    # ('MRI_PD1_control',0),
+    # ('MRI_PD1_parkinsons',0),
 
     # model params
     patience = 10
@@ -38,9 +39,9 @@ def preprocess_and_train(eval=True):
 
     for dataset in chosen_datasets:
         if chosen_datasets.index(dataset) == 0:
-            X,y = open_dataset(dataset[0],limit=dataset[1])
+            X,y = open_dataset(dataset[0],limit=dataset[1],verbose=1)
         else:
-            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1])
+            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],verbose=1)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
 
@@ -65,7 +66,7 @@ def preprocess_and_train(eval=True):
                                 validation_split = validation_split,
                                 batch_size = batch_size,
                                 epochs=epochs,
-                                verbose=0)
+                                verbose=1)
 
     # compute val_metrics
     metrics = history.history
@@ -93,4 +94,5 @@ def preprocess_and_train(eval=True):
     pass
 
 if __name__ == '__main__':
+    dqsd = 1562
     preprocess_and_train()
