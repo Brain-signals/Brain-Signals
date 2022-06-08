@@ -134,5 +134,5 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
         print('Diagnostics processed')
         print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
 
-    print('Diagnostics processed, good job Team !Get in the batmobile for some new adventures'')
+    print('Diagnostics processed, good job Team !Get in the batmobile for some new adventures')
     return X,y, y_mmse, y_cdr
