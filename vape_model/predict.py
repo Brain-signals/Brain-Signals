@@ -16,3 +16,5 @@ def predict_from_volume(volume):
     X_processed = normalize_vol(X_processed)
 
     y_pred = model.predict(X_processed)
+
+    return 'ok'
