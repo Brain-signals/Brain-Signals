@@ -82,50 +82,57 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
     return X,y
 
-def open_dataset_linear_model(dataset_name,verbose=0):
+def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
 
     # will fetch the infos.csv in the specified dataset's folder
 
-    # datasets_path = os.environ.get("DATASETS_PATH")
-    datasets_path = '/content/drive/MyDrive/6- Bootcamp/VAPE - Brain/Datasets for 3D/'
+    start = time.perf_counter()
+
+    #datasets_path = os.environ.get("DATASETS_PATH")
+    datasets_path = '/Users/lison/code/Elise-L/VAPE-MRI/Jupyter_notebook/'
 
     path = datasets_path+dataset_name+'/'
     info_path = path+'infos/'
 
     file_names = pd.read_csv(info_path+dataset_name+'_mmse_cdr.csv')
+    if limit != 0 :
+        file_names = file_names.sample(frac=1).head(limit)
 
     # put every .nii transformed in a list of array
     X_tmp = []
     n = 1
-    banned = []
     for file_name in file_names['file_name']:
-        if file_name not in banned:
-            if verbose == 1:
-                print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
-                n += 1
+        if verbose == 1:
+            print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
+            n += 1
 
-            volume = NII_to_3Darray(path+file_name)
-            volume = crop_volume(volume)
-            try:
-              volume = resize_and_pad(volume)
-              X_tmp.append(volume)
-            except ZeroDivisionError:
-              banned.append(file_name)
+        volume = NII_to_3Darray(path+file_name)
+        volume = crop_volume(volume)
+        volume = resize_and_pad(volume)
+
+        X_tmp.append(volume)
 
     # transform that list in an array and normalize it
     if verbose == 1:
-        print('.nii files processed. Compiling to X (might take a moment, get faster with Vincent M1, or Elise"s muscles)')
+        print('.nii files processed. Compiling to X (might take a moment)')
     X = np.array(X_tmp)
     X = normalize_vol(X)
 
     # create an array of the diagnostics
     if verbose == 1:
             print('Processing diagnostics...')
-    y = pd.read_csv(info_path+dataset_name+'_mmse_cdr.csv',index_col=0)
-    y_mmse=y['mmse']
-    y_cdr=y['cdr']
+
+
+    y = file_names[['diagnostic']]
+    y_mmse=file_names[['mmse']]
+    y_cdr=file_names[['cdr']]
+
+
+    end = time.perf_counter()
 
     if verbose == 1:
-            print('Diagnostics processed, good job Team ! Get in the batmobile for some new adventures')
-    print('banned are', banned)
-    return X,y,y_mmse,y_cdr
+        print('Diagnostics processed')
+        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
+
+    print('Diagnostics processed, good job Team !Get in the batmobile for some new adventures')
+    return X,y, y_mmse, y_cdr

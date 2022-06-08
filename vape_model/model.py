@@ -9,7 +9,7 @@ from tensorflow.keras.metrics import (TrueNegatives,
                                 FalsePositives)
 
 #first model 3dCNN
-def initialize_model(width, length, depth,learning_rate=0.001):
+def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
     """Build a 3D convolutional neural network model."""
 
     model = Sequential()
@@ -38,7 +38,7 @@ def initialize_model(width, length, depth,learning_rate=0.001):
     model.add(layers.Dense(units=100, activation="relu"))
     model.add(layers.Dense(units=50, activation="relu"))
     model.add(layers.Dense(units=20, activation="relu"))
-    model.add(layers.Dense(units=3, activation="softmax"))
+    model.add(layers.Dense(units=number_of_class, activation="softmax"))
 
     adam_opt = optimizers.Adam(learning_rate=learning_rate)
     model.compile(

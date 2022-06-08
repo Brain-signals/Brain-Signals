@@ -47,6 +47,7 @@ def preprocess_and_train(eval=True):
 
     #encode the y
     y_encoded=encoding_y(y)
+    number_of_class = y_encoded.shape[1]
 
     #split the dataset
     X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)
@@ -56,6 +57,7 @@ def preprocess_and_train(eval=True):
     model = initialize_model(width=target_res,
                              length=target_res,
                              depth=target_res,
+                             number_of_class=number_of_class,
                              learning_rate=learning_rate)
 
     #train model
