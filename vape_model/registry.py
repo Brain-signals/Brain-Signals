@@ -1,3 +1,4 @@
+from socketserver import DatagramRequestHandler
 import mlflow
 from mlflow.tracking import MlflowClient
 
@@ -8,22 +9,22 @@ import pickle
 from tensorflow.keras import Model
 
 def model_to_mlflow(model:Model,model_name:str, params:dict, metrics:dict):
+
     mlflow.set_tracking_uri('https://mlflow.lewagon.ai') #VARIABLE
-    client = MlflowClient()
 
     try:
-        experiment_id = client.create_experiment('VAPE_MRI')
+        experiment_id = mlflow.create_experiment('VAPE_MRI')
     except:
-        experiment_id = client.get_experiment_by_name('VAPE_MRI').experiment_id
+        experiment_id = mlflow.get_experiment_by_name('VAPE_MRI').experiment_id
 
-    run_id = client.create_run(experiment_id)
+    with mlflow.start_run(experiement_id=experiment_id):
+        mlflow.log_params(params)
+        mlflow.log_metrics(metrics)
+        mlflow.keras.log_model(keras_model=model,
+            artifact_path="model",
+            keras_module="tensorflow.keras",
+            registered_model_name=model_name+suffix)
 
-    client.log_params(params)
-    client.log_metrics(metrics)
-    client.keras.log_model(keras_model=model,
-        artifact_path="model",
-        keras_module="tensorflow.keras",
-        registered_model_name=model_name+suffix)
 
     print("\n✅ data saved to mlflow")
 

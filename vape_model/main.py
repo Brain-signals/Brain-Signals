@@ -17,9 +17,10 @@ def preprocess_and_train(eval=True):
     """
 
     chosen_datasets = [
-        ('Controls',10),
-        ('Wonderwall_alzheimers',20),
-        ('Wonderwall_control',10)
+        ('Controls',5),
+        ('Wonderwall_alzheimers',5),
+        ('Wonderwall_control',5),
+        ('MRI_PD1_parkinsons',5)
     ]
 
     # unchosen_datasets :
@@ -27,7 +28,7 @@ def preprocess_and_train(eval=True):
     # ('MRI_PD_vanicek_control',0),
     # ('MRI_PD_vanicek_parkinsons',0),
     # ('MRI_PD1_control',0),
-    # ('MRI_PD1_parkinsons',0),
+
 
     # model params
     patience = 2
