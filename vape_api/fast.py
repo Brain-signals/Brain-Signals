@@ -29,11 +29,18 @@ def root():
     # YOUR CODE HERE
     return {'greeting': 'Hello'}
 
+@app.get("/test")
+def root():
+    # YOUR CODE HERE
+    return {'greeting': 'Hello'}
 
-@app.post("/predict/image")
+
+@app.post("/predict")
 def predict_api(file: UploadFile = File(...)):
-    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png", "nii")
-    if not extension:
-        return "Image must be jpg or png format!"
-    image = read_imagefile(file.read())
-    return "merci"
+    return "merci pour l'upload"
+
+    #extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png", "nii")
+    #if not extension:
+    #    return "Image must be jpg or png format!"
+    #image = read_imagefile(file.read())
+    #return "merci"

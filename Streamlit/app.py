@@ -9,9 +9,10 @@ import time
 import cv2
 from skimage import io
 import plotly.graph_objects as go
+import requests
 
 
-
+API_URL = "http://127.0.0.1:8000/predict"
 
 
 def plot3D(img):
@@ -139,7 +140,7 @@ if choice == "Image":
     if image_file is not None:
         st.image(load_image(image_file),width=250)
         st.markdown(f''' {np.array(image_file)}''')
-
+        st.markdown(requests.post(API_URL, files={'file': image_file.getvalue()}).json())
 
 
 
@@ -155,6 +156,18 @@ if choice == "Volume":
         with open(volume_file.name, 'wb') as f:
             f.write(volume_file.getbuffer())
         vol=load_volume_test(volume_file.name)
+
+        # files = open(volume_file, 'rb')
+        st.markdown("--------------------")
+        st.markdown(requests.post(API_URL, files={'file': volume_file.getvalue()}).json())
+        st.markdown("--------------------")
+
+        # with requests.Session() as s:
+        #     r = s.post(API_URL,files=volume_file)
+        #     st.markdown("--------------------")
+        #     st.markdown(r.status_code)
+        #     st.markdown("--------------------")
+
         st.markdown(vol.shape)
 
-        st.plotly_chart(plot3D(vol), use_container_width=False, sharing="streamlit")
+        # st.plotly_chart(plot3D(vol), use_container_width=False, sharing="streamlit")
