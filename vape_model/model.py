@@ -84,14 +84,3 @@ def encoding_y(y):
     enc.fit(y[['diagnostic']])
     y_encoded = enc.transform(y[['diagnostic']]).astype('int8')
     return y_encoded
-
-
-def evaluate_model(model,X_test,y_test):
-    """
-    Evaluate trained model performance on dataset
-    """
-
-    metrics_eval = model.evaluate(x=X_test,y=y_test,
-        verbose=1,return_dict=True)
-
-    return metrics_eval

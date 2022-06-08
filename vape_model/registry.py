@@ -59,7 +59,6 @@ def model_to_mlflow(model,model_name:str, params:dict, metrics:dict):
 
     print("\n✅ data saved locally")
     '''
-
     pass
 
 def load_model(model_name:str, stage="None") -> Model:
