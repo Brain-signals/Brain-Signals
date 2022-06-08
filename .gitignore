@@ -9,6 +9,7 @@ bin-release/
 .settings/
 .python-version
 draft/
+Jupyter_notebook/
 
 
 # Executables
@@ -22,4 +23,4 @@ draft/
 # information for Eclipse / Flash Builder.
 
 #rawdata
-/Users/lison/code/Elise-L/VAPE-MRI/raw_data
+~/code/Elise-L/VAPE-MRI/raw_data
