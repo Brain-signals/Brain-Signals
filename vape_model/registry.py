@@ -1,18 +1,14 @@
 import mlflow
 from mlflow.tracking import MlflowClient
 
-import glob
 import os
 from time import strftime
 import pickle
 
-from colorama import Fore, Style
-
-from tensorflow import keras
 from tensorflow.keras import Model
 
 def model_to_mlflow(model:Model,model_name:str, params:dict, metrics:dict):
-    mlflow.set_tracking_uri('https://mlflow.lewagon.ai')
+    mlflow.set_tracking_uri('https://mlflow.lewagon.ai') #VARIABLE
     client=MlflowClient()
 
     try:
@@ -38,12 +34,9 @@ def model_to_mlflow(model:Model,model_name:str, params:dict, metrics:dict):
                 client.keras.log_model(keras_model=model,
                                        artifact_path="model",
                                        keras_module="tensorflow.keras",
-                                       registered_model_name=model_name)
+                                       registered_model_name=model_name+suffix)
 
     print("\n✅ data saved to mlflow")
-
-
-    print("\nSave model to local disk..." )
 
     suffix = strftime("%Y%m%d-%H%M%S")
 
@@ -75,7 +68,7 @@ def model_to_mlflow(model:Model,model_name:str, params:dict, metrics:dict):
 
     print("\n✅ data saved locally")
 
-def load_model(stage="None", model_name:str) -> Model:
+def load_model(model_name:str, stage="None") -> Model:
     """
     load the latest saved model
     """

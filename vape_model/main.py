@@ -1,85 +1,96 @@
 
-from vape_model.model import (initialize_model,
-                              train_model,
-                              evaluate_model,
-                              split_train_test,
-                              encoding_y)
+from vape_model.model import evaluate_model, initialize_model,train_model,encoding_y
+from vape_model.registry import model_to_mlflow
+from vape_model.files import open_dataset
 
-from vape_model.preprocess import (compute_roi,
-                                   get_brain_contour_nii,
-                                   crop_volume,
-                                   resize_and_pad,
-                                   normalize_vol
-                                   )
-from vape_model.registry import (model_to_mlflow,load_model)
-from vape_model.files import (scan_folder_for_nii,
-                              NII_to_3Darray,
-                              NII_to_layer,
-                              open_dataset
-                              )
-
+from sklearn.model_selection import train_test_split
 
 import numpy as np
 import pandas as pd
 import os
 
-from colorama import Fore, Style
-
-def preprocess_and_train(
-    first_row=0
-    , stage="None"
-):
+def preprocess_and_train(eval=True):
     """
     Load data in memory, clean and preprocess it, train a Keras model on it,
     save the model, and finally compute & save a performance metric
     on a validation set holdout at the `model.fit()` level
     """
-    datasets_path = os.environ.get("DATASETS_PATH")
-    dataset_names = os.listdir(datasets_path)
 
-    print("\n⭐️ use case: preprocess and train")
-    X1,y1 = open_dataset('MRI_PD_vanicek_control', verbose=1)
-    X2,y2 = open_dataset('MRI_PD_vanicek_parkinsons', verbose=1)
-    X3,y3 = open_dataset('Wonderwall', verbose=1)
-    X4,y4 = open_dataset('MRI_PD_1', verbose=1)
+    chosen_datasets = [
+        ('Controls',40),
+        ('MRI_PD_vanicek_control',0),
+        ('MRI_PD_vanicek_parkinsons',0),
+        ('MRI_PD1_control',0),
+        ('MRI_PD1_parkinsons',0),
+        ('Wonderwall_alzheimers',100),
+        ('Wonderwall_control',24)
+    ]
 
-    X = np.concatenate((X1,X2,X3,X4))
-    y = pd.concat((y1,y2,y3,y4),ignore_index=True)
+    # unchosen_datasets : ('MRI_MS',0),
+
+    # model params
+    patience = 10
+    validation_split = 0.3
+    learning_rate = 0.001
+    batch_size = 16
+    epochs = 100
+    es_monitor = 'val_accuracy'
+
+    for dataset in chosen_datasets:
+        if chosen_datasets.index(dataset) == 0:
+            X,y = open_dataset(dataset[0],limit=dataset[1])
+        else:
+            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1])
+            X = np.concatenate((X,X_tmp))
+            y = pd.concat((y,y_tmp),ignore_index=True)
 
     #encode the y
     y_encoded=encoding_y(y)
 
     #split the dataset
-    X_train, X_test, y_train, y_test=split_train_test(X, y_encoded)
+    X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)
 
     #initialize model
-    target_res=os.environ.get('TARGET_RES')
-    model= initialize_model(target_res,target_res,target_res)
+    target_res = int(os.environ.get('TARGET_RES'))
+    model = initialize_model(width=target_res,
+                             length=target_res,
+                             depth=target_res,
+                             learning_rate=learning_rate)
 
     #train model
-    model, history= train_model(model, X_train, y_train,validation_split=0.3,
-                validation_data=None)
-
-    # model params
-    #learning_rate = 0.001
-    #batch_size = 256
+    model, history= train_model(model,
+                                X_train, y_train,
+                                patience=patience,
+                                monitor=es_monitor,
+                                validation_split = validation_split,
+                                batch_size = batch_size,
+                                epochs=epochs,
+                                verbose=0)
 
     # compute val_metrics
-    val_acc = np.max(history.history['val_accuracy'])
-    metrics = dict(val_acc=val_acc)
+    metrics = history.history
 
     # save model
     params = dict(
         # hyper parameters
-        #learning_rate=learning_rate,
-        #batch_size=batch_size,
+        used_dataset=chosen_datasets,
+        target_res=target_res,
+        patience=patience,
+        validation_split=validation_split,
+        learning_rate=learning_rate,
+        batch_size=batch_size,
+        epochs=epochs,
         # package behavior
-        context="preprocess and train",
-        # data source
-        used_dataset=dataset_names,)
+        context="preprocess and train")
 
     model_to_mlflow(model=model, params=params, metrics=metrics)
 
-    print(f"\n✅ model uploaded on mlflow")
+    print(f"\nModel uploaded on mlflow")
 
-    return val_acc
+    if eval:
+        metrics_eval = evaluate_model(X_test,y_test,model=model)
+
+    pass
+
+if __name__ == '__main__':
+    preprocess_and_train()

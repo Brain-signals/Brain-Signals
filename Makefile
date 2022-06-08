@@ -58,3 +58,6 @@ GCP_connect:
 # 	else \
 # 		echo "no"; \
 # 	fi
+
+train_model:
+	@python -m main.py

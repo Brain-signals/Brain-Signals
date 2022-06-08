@@ -41,7 +41,7 @@ def get_brain_contour_nii(img):
 
 
 
-def crop_volume(volume,slicing_up=0.4,slicing_bot=0.4):
+def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
 
     roi = []
     left_cord = right_cord = bottom_cord = top_cord = []
@@ -71,7 +71,7 @@ def crop_volume(volume,slicing_up=0.4,slicing_bot=0.4):
     volume = volume[min_bottom : max_top, min_left : max_right, :]
     # print('volume shape is',volume.shape)
 
-    index_max_area = roi.index(np.max(area))
+    index_max_area = roi.index(np.max(roi))
     top_z = index_max_area + int(volume.shape[2]*slicing_up)
     bottom_z = index_max_area - int(volume.shape[2]*slicing_bot)
     # print('top_z is',top_z)
@@ -120,7 +120,7 @@ def resize_and_pad(volume):
     pad_length = get_padding(volume.shape[1])
     pad_depth = get_padding(volume.shape[2])
 
-    volume = np.pad(volume, (pad_width, pad_length, pad_depth), mode='minimum')
+    volume = np.pad(volume, (pad_width, pad_length, pad_depth), mode='constant')
 
     return volume
 
@@ -129,7 +129,3 @@ def resize_and_pad(volume):
 def normalize_vol(X):
     """Normalize the volume"""
     return cv2.normalize(X, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
-
-
-
-
