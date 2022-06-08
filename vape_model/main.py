@@ -17,9 +17,9 @@ def preprocess_and_train(eval=True):
     """
 
     chosen_datasets = [
-        ('Controls',40),
-        ('Wonderwall_alzheimers',60),
-        ('Wonderwall_control',20)
+        ('Controls',10),
+        ('Wonderwall_alzheimers',20),
+        ('Wonderwall_control',10)
     ]
 
     # unchosen_datasets :
@@ -30,11 +30,11 @@ def preprocess_and_train(eval=True):
     # ('MRI_PD1_parkinsons',0),
 
     # model params
-    patience = 10
+    patience = 2
     validation_split = 0.3
     learning_rate = 0.001
     batch_size = 16
-    epochs = 100
+    epochs = 5
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -97,6 +97,7 @@ def preprocess_and_train(eval=True):
 
     if eval:
         metrics_eval = evaluate_model(X_test,y_test,model=model)
+        print(metrics_eval)
 
     pass
 

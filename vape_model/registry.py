@@ -9,32 +9,21 @@ from tensorflow.keras import Model
 
 def model_to_mlflow(model:Model,model_name:str, params:dict, metrics:dict):
     mlflow.set_tracking_uri('https://mlflow.lewagon.ai') #VARIABLE
-    client=MlflowClient()
+    client = MlflowClient()
 
     try:
-        experiment_id=client.create_experiment('VAPE_MRI')
+        experiment_id = client.create_experiment('VAPE_MRI')
     except:
-        experiment_id=client.get_experiment_by_name('VAPE_MRI').experiment_id
+        experiment_id = client.get_experiment_by_name('VAPE_MRI').experiment_id
 
-    with client.start_run():
+    run_id = client.create_run(experiment_id)
 
-            # push parameters to mlflow
-            if params is not None:
-                for param_name, param in params.items():
-                    client.log_param(param_name, param)
-
-            # push metrics to mlflow
-            if metrics is not None:
-                for metric_name, metric in metrics.items():
-                    client.log_metric(metric_name, metric)
-
-            # push model to mlflow
-            if model is not None:
-
-                client.keras.log_model(keras_model=model,
-                                       artifact_path="model",
-                                       keras_module="tensorflow.keras",
-                                       registered_model_name=model_name+suffix)
+    client.log_params(params)
+    client.log_metrics(metrics)
+    client.keras.log_model(keras_model=model,
+        artifact_path="model",
+        keras_module="tensorflow.keras",
+        registered_model_name=model_name+suffix)
 
     print("\n✅ data saved to mlflow")
 
