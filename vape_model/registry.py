@@ -33,13 +33,13 @@ def model_to_pickle(model, params:dict, metrics:dict):
 
     # save params
     params_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params", suffix + ".pickle")
-    with open(params_path, 'wb') as file:
-        pickle.dump(params, file)
+    with open(params_path, 'wb') as f:
+        pickle.dump(params, f)
 
     # save metrics
     metrics_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "metrics", suffix + ".pickle")
-    with open(metrics_path, "wb") as file:
-        pickle.dump(metrics, file)
+    with open(metrics_path, "wb") as f:
+        pickle.dump(metrics, f)
 
     # save model
     model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", suffix + ".pickle")
