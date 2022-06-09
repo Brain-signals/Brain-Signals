@@ -79,8 +79,9 @@ def open_dataset(dataset_name,verbose=0,limit=0):
         print('Diagnostics processed')
         print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
 
-
     return X,y
+
+
 
 def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
 
@@ -88,8 +89,8 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
 
     start = time.perf_counter()
 
-    #datasets_path = os.environ.get("DATASETS_PATH")
-    datasets_path = '/Users/lison/code/Elise-L/VAPE-MRI/Jupyter_notebook/'
+    datasets_path = os.environ.get("DATASETS_PATH")
+    #datasets_path = '/Users/lison/code/Elise-L/VAPE-MRI/Jupyter_notebook/'
 
     path = datasets_path+dataset_name+'/'
     info_path = path+'infos/'
@@ -124,9 +125,8 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
 
 
     y = file_names[['diagnostic']]
-    y_mmse=file_names[['mmse']]
-    y_cdr=file_names[['cdr']]
-
+    y_mmse = file_names[['mmse']]
+    y_cdr = file_names[['cdr']]
 
     end = time.perf_counter()
 
@@ -135,4 +135,4 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
         print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
 
     print('Diagnostics processed, good job Team !Get in the batmobile for some new adventures')
-    return X,y, y_mmse, y_cdr
+    return X,y_mmse

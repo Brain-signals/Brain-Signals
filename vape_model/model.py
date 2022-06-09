@@ -41,6 +41,38 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
 
     return model
 
+def initialize_model_linear(width, length, depth,learning_rate=0.001):
+    """Build a 3D convolutional neural network model."""
+
+    model = Sequential()
+
+    model.add(layers.Conv3D(
+        filters=16,
+        kernel_size=3,
+        activation="relu",
+        input_shape=(width, length, depth, 1)))
+    model.add(layers.MaxPool3D(pool_size=2))
+
+    model.add(layers.Conv3D(
+        filters=32,
+        kernel_size=2,
+        activation="relu",))
+    model.add(layers.MaxPool3D(pool_size=2))
+
+    model.add(layers.Flatten())
+    model.add(layers.Dense(units=50, activation="relu"))
+    model.add(layers.Dense(units=20, activation="relu"))
+    model.add(layers.Dense(units=1, activation="linear"))
+
+    adam_opt = optimizers.Adam(learning_rate=learning_rate)
+    model.compile(
+      loss="mse",
+      optimizer=adam_opt,
+      metrics=["mae"],
+    )
+
+    return model
+
 
 def train_model(model: Model,
                 X_train: np.ndarray,

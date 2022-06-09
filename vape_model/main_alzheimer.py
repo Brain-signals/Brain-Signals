@@ -1,6 +1,7 @@
-from vape_model.model import initialize_model,train_model,encoding_y
+
+from vape_model.model import initialize_model,train_model,encoding_y,initialize_model_linear
 from vape_model.registry import model_to_mlflow, model_to_pickle
-from vape_model.files import open_dataset
+from vape_model.files import open_dataset,open_dataset_linear_model
 
 from sklearn.model_selection import train_test_split
 
@@ -16,51 +17,44 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',10),
-        ('MRI_PD1_control',10),
-        ('Wonderwall_control',10),
-        ('MRI_PD1_parkinsons',10),
-        ('Wonderwall_alzheimers',20),
-        ('MRI_PD_vanicek_parkinsons',10),
-
+        ('Wonderwall_control',2),
+        ('Wonderwall_alzheimers',4),
     ]
 
     # unchosen_datasets :
     # ('MRI_MS',40)
     # ('MRI_PD_vanicek_control',15),
+    # ('Controls',10),
+    # ('MRI_PD1_control',10),
+    # ('MRI_PD1_parkinsons',10),
+    # ('MRI_PD_vanicek_parkinsons',10),
 
 
 
     # model params
-    patience = 5
+    patience = 1
     validation_split = 0.3
     learning_rate = 0.0005
     batch_size = 16
-    epochs = 25
-    es_monitor = 'val_accuracy'
+    epochs = 2
+    es_monitor = 'loss'
 
     for dataset in chosen_datasets:
         if chosen_datasets.index(dataset) == 0:
-            X,y = open_dataset(dataset[0],limit=dataset[1],verbose=1)
+            X,y = open_dataset_linear_model(dataset[0],limit=dataset[1],verbose=1)
         else:
-            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],verbose=1)
+            X_tmp,y_tmp = open_dataset_linear_model(dataset[0],limit=dataset[1],verbose=1)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
 
-    #encode the y
-    y_encoded=encoding_y(y)
-    number_of_class = y_encoded.shape[1]
-    diagnostics = list(y['diagnostic'].unique())
-
     #split the dataset
-    X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3)
 
     #initialize model
     target_res = int(os.environ.get('TARGET_RES'))
-    model = initialize_model(width=target_res,
+    model = initialize_model_linear(width=target_res,
                              length=target_res,
                              depth=target_res,
-                             number_of_class=number_of_class,
                              learning_rate=learning_rate)
 
     #train model
@@ -83,7 +77,6 @@ def preprocess_and_train(eval=False):
     params = dict(
         # hyper parameters
         used_dataset=chosen_datasets,
-        diagnostics=diagnostics,
         target_res=target_res,
         patience=patience,
         validation_split=validation_split,

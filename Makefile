@@ -48,5 +48,8 @@ GCP_connect:
 train_model:
 	@python -m vape_model.main
 
+train_model_alzheimer:
+	@python -m vape_model.main_alzheimer
+
 run_api:
 	@uvicorn vape_api.fast:app --reload
