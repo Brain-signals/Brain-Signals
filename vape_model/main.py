@@ -1,5 +1,5 @@
 
-from vape_model.model import evaluate_model, initialize_model,train_model,encoding_y
+from vape_model.model import initialize_model,train_model,encoding_y
 from vape_model.registry import model_to_mlflow
 from vape_model.files import open_dataset
 
@@ -23,19 +23,19 @@ def preprocess_and_train(eval=False):
         ('MRI_PD1_control',15),
         ('MRI_PD_vanicek_parkinsons',19),
         ('Wonderwall_alzheimers',40),
-        ('MRI_PD1_parkinsons',21)
-        ('MRI_MS',40),
+        ('MRI_PD1_parkinsons',21),
+        ('MRI_MS',40)
     ]
 
     # unchosen_datasets :
 
 
     # model params
-    patience = 1
+    patience = 5
     validation_split = 0.3
     learning_rate = 0.001
-    batch_size = 8
-    epochs = 1
+    batch_size = 16
+    epochs = 100
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
