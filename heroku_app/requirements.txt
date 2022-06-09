@@ -1,0 +1,11 @@
+streamlit
+numpy
+Pillow
+nibabel
+matplotlib
+plotly
+scipy
+opencv-python-headless
+opencv
+base64
+time

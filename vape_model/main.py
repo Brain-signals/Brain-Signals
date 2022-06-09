@@ -17,25 +17,27 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',3),
-        ('MRI_PD1_parkinsons',3),
+        ('Controls',10),
+        ('MRI_PD1_control',10),
+        ('Wonderwall_control',10),
+        ('MRI_PD1_parkinsons',10),
+        ('Wonderwall_alzheimers',20),
+        ('MRI_PD_vanicek_parkinsons',10),
+
     ]
 
     # unchosen_datasets :
     # ('MRI_MS',40)
-    # ('Wonderwall_control',15),
     # ('MRI_PD_vanicek_control',15),
-    # ('MRI_PD1_control',15),
-    # ('MRI_PD_vanicek_parkinsons',19),
-    # ('Wonderwall_alzheimers',40),
+
 
 
     # model params
-    patience = 1
+    patience = 5
     validation_split = 0.3
     learning_rate = 0.0005
     batch_size = 16
-    epochs = 2
+    epochs = 25
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:

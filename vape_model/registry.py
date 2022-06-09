@@ -2,6 +2,8 @@ import mlflow
 import os
 from time import strftime
 import pickle
+import glob
+import keras
 
 from tensorflow.keras import Model
 
@@ -50,7 +52,7 @@ def model_to_pickle(model, params:dict, metrics:dict):
     pass
 
 
-def load_model(model_name:str, stage="None") -> Model:
+def load_model_from_mlflow(stage="None") -> Model:
     """
     load the latest saved model.
     """
@@ -58,13 +60,32 @@ def load_model(model_name:str, stage="None") -> Model:
 
     mlflow_model_name = os.environ.get("MLFLOW_MODEL_NAME")
     model_uri = f"models:/{mlflow_model_name}/{stage}"
-    print(f"- uri: {model_uri}")
 
-    try:
-        model = mlflow.keras.load_model(model_uri=model_uri)
-        print("\n✅ model loaded from mlflow")
-    except:
-        # raise exception if no model exists
-        raise NameError(f"No {model_name} model in {stage} stage stored in mlflow")
+    model = mlflow.keras.load_model(model_uri=model_uri)
+    print("\n✅ model loaded from mlflow")
 
-    return model
+    return model, diagnostics
+
+
+def load_model_from_local(model_id=''):
+
+    model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
+    params_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params")
+
+    if model_id == '':
+        chosen_model_path = sorted(glob.glob(f"{model_directory}/*"))[-1]
+        model_id = chosen_model_path[-22:]
+    else:
+        for model_path in glob.glob(f"{model_directory}/*"):
+            if model_id in model_path:
+                chosen_model_path = model_path
+
+    params_path = os.path.join(params_directory, model_id)
+    with open(params_path, "rb") as f:
+        params = pickle.load(f)
+
+    diagnostics = params['diagnostics']
+    model = keras.models.load_model(chosen_model_path)
+    print("\n✅ model loaded from local")
+
+    return model, diagnostics
