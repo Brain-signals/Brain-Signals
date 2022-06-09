@@ -151,6 +151,7 @@ def load_volume_test(name):
 if choice == "Volume":
     st.subheader("Volume")
     volume_file = st.file_uploader("Upload")
+    #volume_data = nib.load(volume_file).get_fdata()
 
     if volume_file is not None:
         with open(volume_file.name, 'wb') as f:
@@ -167,7 +168,5 @@ if choice == "Volume":
         #     st.markdown("--------------------")
         #     st.markdown(r.status_code)
         #     st.markdown("--------------------")
-
-        st.markdown(vol.shape)
 
         # st.plotly_chart(plot3D(vol), use_container_width=False, sharing="streamlit")
