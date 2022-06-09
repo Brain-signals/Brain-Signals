@@ -3,10 +3,10 @@ from vape_model.registry import load_model_from_local,load_model_from_mlflow
 import os
 import numpy as np
 
-def predict_from_volume(volume):
+def predict_from_volume(volume,model_id=0):
 
     # model, diagnostics = load_model_from_mlflow()
-    model, diagnostics = load_model_from_local()
+    model, diagnostics = load_model_from_local(model_id)
 
     os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
 
