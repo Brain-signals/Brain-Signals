@@ -1,13 +1,13 @@
 from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol
-from vape_model.registry import load_model
+from vape_model.registry import load_model_from_local,load_model_from_mlflow
 import os
 import numpy as np
 
 def predict_from_volume(volume):
 
-    model_name = os.environ.get("MLFLOW_MODEL_NAME")
+    # model, diagnostics = load_model_from_mlflow()
+    model, diagnostics = load_model_from_local()
 
-    model = load_model(model_name=model_name)
     os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
 
     vol_crop = crop_volume(volume)
@@ -17,6 +17,9 @@ def predict_from_volume(volume):
     X = np.array(X_tmp)
     X_processed = normalize_vol(X)
 
-    y_pred = model.predict(X_processed)
+    y_pred = np.round(model.predict(X_processed),3)
+    preds = {}
+    for n in range(len(y_pred[0])):
+        preds[diagnostics[n]] = y_pred[0][n]
 
-    return np.round(y_pred,3)
+    return preds
