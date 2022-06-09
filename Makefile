@@ -48,6 +48,9 @@ GCP_connect:
 train_model:
 	@python -m vape_model.main
 
+run_api:
+	@uvicorn vape_api.fast:app --reload
+
 #DL_datasets:
 #	@gsutil -m cp -r gs://vape-mri/processed_datasets/ ${DATASETS_PATH}
 

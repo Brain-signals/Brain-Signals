@@ -24,6 +24,9 @@ pytz
 uvicorn
 httpx
 pytest-asyncio
+streamlit
+Pillow
+python-multipart
 
 [:sys_platform != "darwin"]
 tensorflow==2.7.0

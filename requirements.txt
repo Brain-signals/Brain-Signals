@@ -32,3 +32,10 @@ httpx           # HTTP client
 pytest-asyncio  # Asynchronous I/O support for pytest
 
 #packgenlite @ git+https://github.com/krokrob/packgenlite.git@master
+
+streamlit
+Pillow
+python-multipart
+base64
+pydantic
+json
