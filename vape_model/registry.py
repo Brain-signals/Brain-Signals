@@ -7,6 +7,7 @@ import keras
 
 from tensorflow.keras import Model
 
+
 def model_to_mlflow(model,model_name:str, params:dict, metrics:dict):
 
     mlflow.set_tracking_uri('https://mlflow.lewagon.ai') #VARIABLE
