@@ -1,6 +1,6 @@
 
 from vape_model.model import initialize_model,train_model,encoding_y
-from vape_model.registry import model_to_mlflow
+from vape_model.registry import model_to_mlflow, model_to_pickle
 from vape_model.files import open_dataset
 
 from sklearn.model_selection import train_test_split
@@ -17,25 +17,25 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',15),
-        ('Wonderwall_control',15),
-        ('MRI_PD_vanicek_control',15),
-        ('MRI_PD1_control',15),
-        ('MRI_PD_vanicek_parkinsons',19),
-        ('Wonderwall_alzheimers',40),
-        ('MRI_PD1_parkinsons',21),
-        ('MRI_MS',40)
+        ('Controls',3),
+        ('MRI_PD1_parkinsons',3),
     ]
 
     # unchosen_datasets :
+    # ('MRI_MS',40)
+    # ('Wonderwall_control',15),
+    # ('MRI_PD_vanicek_control',15),
+    # ('MRI_PD1_control',15),
+    # ('MRI_PD_vanicek_parkinsons',19),
+    # ('Wonderwall_alzheimers',40),
 
 
     # model params
-    patience = 5
+    patience = 1
     validation_split = 0.3
-    learning_rate = 0.001
+    learning_rate = 0.0005
     batch_size = 16
-    epochs = 100
+    epochs = 2
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -94,13 +94,14 @@ def preprocess_and_train(eval=False):
 
     model_name = os.environ.get("MLFLOW_MODEL_NAME")
 
-    model_to_mlflow(model=model,
-                    model_name=model_name,
+    model_to_pickle(model=model,
                     params=params,
                     metrics=metrics)
 
-    print(f"\nModel uploaded on mlflow")
-    print(model)
+    # model_to_mlflow(model=model,
+    #                 model_name=model_name,
+    #                 params=params,
+    #                 metrics=metrics)
 
     if eval:
         metrics_eval = model.evaluate(x=X_test,y=y_test,verbose=1,return_dict=True)

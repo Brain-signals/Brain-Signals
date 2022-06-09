@@ -10,7 +10,7 @@ bin-release/
 .python-version
 draft/
 Jupyter_notebook/
-
+registry/
 
 # Executables
 *.swf
