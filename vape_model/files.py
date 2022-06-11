@@ -83,7 +83,7 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
 
 
-def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
+def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
 
     # will fetch the infos.csv in the specified dataset's folder
 
