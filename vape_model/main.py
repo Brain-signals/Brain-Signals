@@ -45,9 +45,10 @@ def preprocess_and_train(eval=False):
             y = pd.concat((y,y_tmp),ignore_index=True)
 
     #encode the y
-    y_encoded=encoding_y(y)
-    number_of_class = y_encoded.shape[1]
-    diagnostics = list(y['diagnostic'].unique())
+    enc = OneHotEncoder(sparse = False)
+    y_encoded = enc.fit_transform(y[['diagnostic']]).astype('int8')
+    number_of_class = len(enc.get_feature_names_out())
+    diagnostics = enc.get_feature_names_out()
 
     #split the dataset
     X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)

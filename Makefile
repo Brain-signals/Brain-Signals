@@ -53,3 +53,6 @@ train_model_alzheimer:
 
 run_api:
 	@uvicorn vape_api.fast:app --reload
+
+dl_datasets:
+	@gsutil -m cp -ncr gs://vape-mri/processed_datasets ${DATASETS_PATH}/..
