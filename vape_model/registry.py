@@ -7,6 +7,7 @@ import keras
 
 from tensorflow.keras import Model
 
+
 def model_to_mlflow(model,model_name:str, params:dict, metrics:dict):
 
     mlflow.set_tracking_uri('https://mlflow.lewagon.ai') #VARIABLE
@@ -64,10 +65,10 @@ def load_model_from_mlflow(stage="None") -> Model:
     model = mlflow.keras.load_model(model_uri=model_uri)
     print("\n✅ model loaded from mlflow")
 
-    return model, diagnostics
+    return model
 
 
-def load_model_from_local(model_id='20220609-144810.pickle'):
+def load_model_from_local(model_id='20220610-021031.pickle'):
 
     model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
     params_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params")
@@ -89,3 +90,20 @@ def load_model_from_local(model_id='20220609-144810.pickle'):
     print("\n✅ model loaded from local")
 
     return model, diagnostics
+
+def load_model_from_local_alzheimer(model_id='20220609-173813.pickle'):
+
+    model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
+
+    if model_id == '':
+        chosen_model_path = sorted(glob.glob(f"{model_directory}/*"))[-1]
+        model_id = chosen_model_path[-22:]
+    else:
+        for model_path in glob.glob(f"{model_directory}/*"):
+            if model_id in model_path:
+                chosen_model_path = model_path
+
+    model = keras.models.load_model(chosen_model_path)
+    print("\n✅ model loaded from local")
+
+    return model

@@ -2,9 +2,6 @@ tensorflow-macos==2.7.0; sys_platform == 'darwin' and 'ARM' in platform_version
 tensorflow==2.7.0; sys_platform == 'darwin' and 'ARM' not in platform_version
 tensorflow==2.7.0; sys_platform != 'darwin'
 #python == 3.8.13
-pytest
-pylint
-ipdb
 jupyterlab
 numpy
 pandas
@@ -23,6 +20,7 @@ mlflow
 prefect
 prefect[viz]
 psycopg2-binary
+python-multipart
 
 fastapi         # API framework
 pytz            # Timezones management
@@ -36,6 +34,9 @@ pytest-asyncio  # Asynchronous I/O support for pytest
 streamlit
 Pillow
 python-multipart
-base64
+#base64
 pydantic
-json
+#json
+#tempfile
+#os
+aiofiles

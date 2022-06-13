@@ -8,9 +8,11 @@ bin-release/
 .DS_Store
 .settings/
 .python-version
+.env
 draft/
 Jupyter_notebook/
 registry/
+
 
 # Executables
 *.swf

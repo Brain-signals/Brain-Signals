@@ -1,5 +1,5 @@
 from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol
-from vape_model.registry import load_model_from_local,load_model_from_mlflow
+from vape_model.registry import load_model_from_local,load_model_from_local_alzheimer,load_model_from_mlflow
 import os
 import numpy as np
 
@@ -23,3 +23,22 @@ def predict_from_volume(volume):
         preds[diagnostics[n]] = y_pred[0][n]
 
     return preds
+
+
+def predict_from_volume_alzheimer(volume):
+
+    # model, diagnostics = load_model_from_mlflow()
+    model = load_model_from_local_alzheimer()
+
+    os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
+
+    vol_crop = crop_volume(volume)
+    vol_res = resize_and_pad(vol_crop)
+    X_tmp = []
+    X_tmp.append(vol_res)
+    X = np.array(X_tmp)
+    X_processed = normalize_vol(X)
+
+    y_pred = np.round(model.predict(X_processed),3)
+
+    return y_pred

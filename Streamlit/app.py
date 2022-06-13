@@ -16,6 +16,7 @@ import base64
 import io as iioo
 
 API_URL = "http://127.0.0.1:8000/predict"
+API_URL_AD="http://127.0.0.1:8000/predict_AD"
 
 
 def display_image(volume):
@@ -26,13 +27,13 @@ def display_image(volume):
     slice_z = int(volume.shape[2]/2)
 
     columns[0].markdown('<div style="text-align: center"><p style="font-family:Courier; color:Black; font-size: 18px;"> X axis </p></div>',unsafe_allow_html=True)
-    columns[0].image(np.rot90(volume[slice_x,:,:]),width=300)
+    columns[0].image(np.rot90(volume[slice_x,:,:]),width=200)
 
     columns[1].markdown('<div style="text-align: center"><p style="font-family:Courier; color:Black; font-size: 18px;">Y axis</p></div>',unsafe_allow_html=True)
-    columns[1].image(np.rot90(volume[:,slice_y,:]),width=300)
+    columns[1].image(np.rot90(volume[:,slice_y,:]),width=200)
 
     columns[2].markdown('<div style="text-align: center"><p style="font-family:Courier; color:Black; font-size: 18px;">Z axis</p></div>',unsafe_allow_html=True)
-    columns[2].image(np.rot90(volume[:,:,slice_z]),width=300)
+    columns[2].image(np.rot90(volume[:,:,slice_z]),width=200)
 
 def display_volume(volume):
     st.plotly_chart(plot3D(volume),
@@ -164,20 +165,23 @@ def crop_volume_disp(volume,slicing_up=0.4,slicing_bot=0.5):
 
 def pred(volume_file):
     # headers={'Content-Type':'application/json'}
-    # resp= requests.post(API_URL, json=volume_file,headers=headers).json()
+    resp= requests.post(API_URL, files={'file': volume_file})
 
-    with requests.Session() as s:
-        response = s.post(API_URL,files=volume_file)
+    # with requests.Session() as s:
+    #     response = s.post(API_URL,files=volume_file)
 
-    if response.status_code == 200:
-        resp = response.json()
+    # if response.status_code == 200:
+    #     resp = response.json()
 
-    else:
-        resp = response.json()
-        resp
-        ":grimacing: api error :robot_face:"
+    # else:
+    #     resp = response.json()
+    #     resp
+    #     ":grimacing: api error :robot_face:"
 
-    return resp
+    return resp.text
+def pred_AD(volume_file):
+    resp= requests.post(API_URL_AD, files={'file': volume_file})
+    return resp.text
 
 def image_to_dict(image_array, dtype='uint8', encoding='utf-8'):
     '''
@@ -225,9 +229,9 @@ def image_to_dict(image_array, dtype='uint8', encoding='utf-8'):
     #title='<p style="font-family:Courier; color:Blue; font-size: 18px;"> MRI info and params </p>'
     #st.markdown(title,unsafe_allow_html=True)
 
-st.set_page_config(layout="wide")
-original_title = '<p style="font-family:Courier; color:Blue; font-size: 35px;">Brain Signal</p>'
-st.markdown(original_title, unsafe_allow_html=True)
+#st.set_page_config(layout="wide")
+#original_title = '<p style="font-family:Courier; color:Blue; font-size: 35px;">Brain Signal</p>'
+#st.markdown(original_title, unsafe_allow_html=True)
 image = Image.open('BrainSignal_.png')
 st.image(image)
 
@@ -235,10 +239,11 @@ st.image(image)
 #menu = ["Image","Volume"]
 #choice = st.sidebar.selectbox("Menu",menu)
 
-st.markdown("<h3 style='text-align: center; color: #3a72cf;'>Detect Brain Pathologies in 3D MRI scans</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #3a72cf;'>Detect Brain Pathologies from 3D MRI scans</h3>", unsafe_allow_html=True)
 st.markdown("<h6 style='text-align: center; color: #1f54ac;'>Deep Learning - 3D Convolutional Neuronal Networks</h6>", unsafe_allow_html=True)
 
-upload_mess="<h6 style='text-align: center; color: #1f54ac;'> Drop your brain 🧐</h6>"
+#upload file in streamlit
+upload_mess="<h6 color: #079EB2;'> Drop your brain 👇🏼 </h6>"
 st.markdown(upload_mess,unsafe_allow_html=True)
 volume_file = st.file_uploader(' ')
 
@@ -246,36 +251,77 @@ if volume_file is not None:
     with open(volume_file.name, 'wb') as f:
         f.write(volume_file.getbuffer())
 
-    volume=load_volume(volume_file.name)
     #volume_str=image_to_dict(volume)
 
-    # convert image to bytes
-    img_byte_arr2 = iioo.BytesIO()
-    volume.load(img_byte_arr2, mm)
-    img_byte_arr2 = img_byte_arr2.getvalue()
+    # # convert image to bytes
+    # img_byte_arr2 = iioo.BytesIO()
+    # volume.load(img_byte_arr2, mm)
+    # img_byte_arr2 = img_byte_arr2.getvalue()
 
-    with open("array.npy", "wb") as f:
-        f.write(img_byte_arr2)
+    # with open("array.npy", "wb") as f:
+    #     f.write(img_byte_arr2)
 
+    # # api call
+    # files = {"image": img_byte_arr2}
 
-    # api call
-    files = {"image": img_byte_arr2}
-
-
-    with st.spinner('Preprocessing in progress ...🧘🏻‍♂️'):
-        volume = crop_volume_disp(volume)
-        volume = resize_and_pad(volume)
-        volume_proc= normalize_vol(volume)
-    processed_mess='<p style="font-family:Courier; color:Blue; font-size: 18px;">Processed & Upload achieved ✅ </p>'
-    st.markdown(processed_mess,unsafe_allow_html=True)
 
     col11, col21, col31 = st.columns(3)
-    bt = col21.button('Prediction')
+    bt = col21.button('Make Prediction')
+    bt4=col21.button("Predict Pathology's degree")
+    bt2=col21.button('Show MRI scans')
+    bt3=col21.button('Show 3D scans')
+
 
     if bt:
         st.markdown('------------')
-        st.markdown(pred(volume_str))
+        processed_mess='<p style="font-family:Courier; color:Blue; font-size: 16px;">We are working, be patient please ...🧘🏻‍♂️ </p>'
+        st.markdown(processed_mess,unsafe_allow_html=True)
+        file_ = open("/Users/lison/code/Elise-L/VAPE-MRI/Streamlit/giphy.gif", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        st.markdown(
+        f'<body><center><img src="data:image/gif;base64,{data_url}" ></body>',
+        unsafe_allow_html=True)
+
+        st.markdown(f"""<h3 style='text-align: center; color: #CB7117;'><p style="font-family:Courier; font-size: 20px;">After scanning your brain,</p> <p style="font-family:Courier; font-size: 20px;"> your diagnosis is {pred(volume_file)}</p> </h6>""", unsafe_allow_html=True)
+        #st.markdown(pred(volume_file))
         st.markdown('------------')
+
+        #if pred(volume_file) == 'Alzheimer':
+    if bt4:
+        processed_mess='<p style="font-family:Courier; color:Blue; font-size: 16px;">We are working, be patient please ...🧘🏻‍♂️ </p>'
+        st.markdown(processed_mess,unsafe_allow_html=True)
+        file_ = open("/Users/lison/code/Elise-L/VAPE-MRI/Streamlit/chat_attend.gif", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        st.markdown(
+        f'<body><center><img src="data:image/gif;base64,{data_url}" ></body>',
+        unsafe_allow_html=True)
+
+        st.markdown(f"""<h6 style='text-align: center; color: #B25007;'><p style="font-family:Courier; font-size: 20px;">Your mmse score is {pred_AD(volume_file)}</p></h6>""", unsafe_allow_html=True)
+
+
+    if bt2:
+        volume=load_volume(volume_file.name)
+        with st.spinner('Preprocessing in progress ...🧘🏻‍♂️'):
+            volume = crop_volume_disp(volume)
+            volume = resize_and_pad(volume)
+            volume_proc= normalize_vol(volume)
+        processed_mess='<p style="font-family:Courier; color:Blue; font-size: 13px;">Processed & Upload achieved ✅ </p>'
+        st.markdown(processed_mess,unsafe_allow_html=True)
+        display_image(volume_proc)
+
+    if bt3:
+        volume=load_volume(volume_file.name)
+        with st.spinner('Preprocessing in progress ...🧘🏻‍♂️'):
+            volume = crop_volume_disp(volume)
+            volume = resize_and_pad(volume)
+            volume_proc= normalize_vol(volume)
+        processed_mess='<p style="font-family:Courier; color:Blue; font-size: 13px;">Processed & Upload achieved ✅ </p>'
+        display_volume(volume_proc)
+
 
     # col1, col2, col3 = st.columns([1,1,1])
 
