@@ -1,7 +1,7 @@
 
-from vape_model.model import initialize_model,train_model,encoding_y,initialize_model_linear
+from vape_model.model import initialize_model,train_model,encoding_y,initialize_model_alzheimer
 from vape_model.registry import model_to_mlflow, model_to_pickle
-from vape_model.files import open_dataset,open_dataset_linear_model
+from vape_model.files import open_dataset,open_dataset_alzheimer
 
 from sklearn.model_selection import train_test_split
 
@@ -17,8 +17,8 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Wonderwall_control',2),
-        ('Wonderwall_alzheimers',4),
+        ('Wonderwall_control',50),
+        ('Wonderwall_alzheimers',150),
     ]
 
     # unchosen_datasets :
@@ -32,18 +32,18 @@ def preprocess_and_train(eval=False):
 
 
     # model params
-    patience = 1
-    validation_split = 0.3
-    learning_rate = 0.0005
-    batch_size = 16
-    epochs = 2
+    patience = 5
+    validation_split = 0.25
+    learning_rate = 0.005
+    batch_size = 32
+    epochs = 50
     es_monitor = 'loss'
 
     for dataset in chosen_datasets:
         if chosen_datasets.index(dataset) == 0:
-            X,y = open_dataset_linear_model(dataset[0],limit=dataset[1],verbose=1)
+            X,y = open_dataset_alzheimer(dataset[0],limit=dataset[1],verbose=1)
         else:
-            X_tmp,y_tmp = open_dataset_linear_model(dataset[0],limit=dataset[1],verbose=1)
+            X_tmp,y_tmp = open_dataset_alzheimer(dataset[0],limit=dataset[1],verbose=1)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
 
@@ -52,7 +52,7 @@ def preprocess_and_train(eval=False):
 
     #initialize model
     target_res = int(os.environ.get('TARGET_RES'))
-    model = initialize_model_linear(width=target_res,
+    model = initialize_model_alzheimer(width=target_res,
                              length=target_res,
                              depth=target_res,
                              learning_rate=learning_rate)

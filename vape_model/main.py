@@ -16,27 +16,24 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',10),
-        ('MRI_PD1_control',10),
-        ('Wonderwall_control',10),
-        ('MRI_PD1_parkinsons',10),
-        ('Wonderwall_alzheimers',20),
-        ('MRI_PD_vanicek_parkinsons',10),
-
+        ('Controls',30),
+        ('MRI_PD_vanicek_control',21),
+        ('MRI_PD1_control',15),
+        ('Wonderwall_control',54),
+        ('MRI_PD1_parkinsons',30),
+        ('MRI_PD_vanicek_parkinsons',20),
+        ('Wonderwall_alzheimers',80),
     ]
 
     # unchosen_datasets :
     # ('MRI_MS',40)
-    # ('MRI_PD_vanicek_control',15),
-
-
 
     # model params
-    patience = 5
-    validation_split = 0.3
+    patience = 10
+    validation_split = 0.25
     learning_rate = 0.0005
     batch_size = 16
-    epochs = 25
+    epochs = 100
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -48,9 +45,10 @@ def preprocess_and_train(eval=False):
             y = pd.concat((y,y_tmp),ignore_index=True)
 
     #encode the y
-    y_encoded=encoding_y(y)
-    number_of_class = y_encoded.shape[1]
-    diagnostics = list(y['diagnostic'].unique())
+    enc = OneHotEncoder(sparse = False)
+    y_encoded = enc.fit_transform(y[['diagnostic']]).astype('int8')
+    number_of_class = len(enc.get_feature_names_out())
+    diagnostics = enc.get_feature_names_out()
 
     #split the dataset
     X_train, X_test, y_train, y_test=train_test_split(X,y_encoded,test_size=0.3)

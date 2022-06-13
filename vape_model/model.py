@@ -27,8 +27,15 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
         activation="relu",))
     model.add(layers.MaxPool3D(pool_size=2))
 
+    model.add(layers.Conv3D(
+        filters=64,
+        kernel_size=2,
+        activation="relu",))
+    model.add(layers.MaxPool3D(pool_size=2))
+
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=50, activation="relu"))
+    model.add(layers.Dense(units=80, activation="relu"))
+    model.add(layers.Dense(units=40, activation="relu"))
     model.add(layers.Dense(units=20, activation="relu"))
     model.add(layers.Dense(units=number_of_class, activation="softmax"))
 
@@ -41,7 +48,7 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
 
     return model
 
-def initialize_model_linear(width, length, depth,learning_rate=0.001):
+def initialize_model_alzheimer(width, length, depth,learning_rate=0.001):
     """Build a 3D convolutional neural network model."""
 
     model = Sequential()
@@ -56,12 +63,11 @@ def initialize_model_linear(width, length, depth,learning_rate=0.001):
     model.add(layers.Conv3D(
         filters=32,
         kernel_size=2,
-        activation="relu",))
+        activation="tanh",))
     model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=50, activation="relu"))
-    model.add(layers.Dense(units=20, activation="relu"))
+    model.add(layers.Dense(units=50, activation="tanh"))
     model.add(layers.Dense(units=1, activation="linear"))
 
     adam_opt = optimizers.Adam(learning_rate=learning_rate)

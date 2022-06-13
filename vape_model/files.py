@@ -39,10 +39,12 @@ def open_dataset(dataset_name,verbose=0,limit=0):
     datasets_path = os.environ.get("DATASETS_PATH")
     # datasets_path = '/content/drive/MyDrive/6- Bootcamp/VAPE - Brain/Datasets for 3D/'
 
-    path = datasets_path+dataset_name+'/'
-    info_path = path+'infos/'
+    path = os.path.join(datasets_path, dataset_name)
+    info_path = os.path.join(path, 'infos/')
+    csv_path = os.path.join(info_path, dataset_name+'.csv')
+    print(csv_path)
 
-    file_names = pd.read_csv(info_path+dataset_name+'.csv')
+    file_names = pd.read_csv(csv_path)
     if limit != 0 :
         file_names = file_names.sample(frac=1).head(limit)
 
@@ -54,7 +56,8 @@ def open_dataset(dataset_name,verbose=0,limit=0):
             print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
             n += 1
 
-        volume = NII_to_3Darray(path+file_name)
+        file_path = os.path.join(path, file_name)
+        volume = NII_to_3Darray(file_path)
         volume = crop_volume(volume)
         volume = resize_and_pad(volume)
 
@@ -83,7 +86,7 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
 
 
-def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
+def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
 
     # will fetch the infos.csv in the specified dataset's folder
 
@@ -92,10 +95,11 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
     datasets_path = os.environ.get("DATASETS_PATH")
     #datasets_path = '/Users/lison/code/Elise-L/VAPE-MRI/Jupyter_notebook/'
 
-    path = datasets_path+dataset_name+'/'
-    info_path = path+'infos/'
+    path = os.path.join(datasets_path, dataset_name)
+    info_path = os.path.join(path, 'infos/')
+    csv_path = os.path.join(info_path, dataset_name+'_mmse_cdr.csv')
 
-    file_names = pd.read_csv(info_path+dataset_name+'_mmse_cdr.csv')
+    file_names = pd.read_csv(csv_path)
     if limit != 0 :
         file_names = file_names.sample(frac=1).head(limit)
 
@@ -107,7 +111,8 @@ def open_dataset_linear_model(dataset_name,verbose=0,limit=0):
             print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
             n += 1
 
-        volume = NII_to_3Darray(path+file_name)
+        file_path = os.path.join(path, file_name)
+        volume = NII_to_3Darray(file_path)
         volume = crop_volume(volume)
         volume = resize_and_pad(volume)
 

@@ -68,7 +68,7 @@ def load_model_from_mlflow(stage="None") -> Model:
     return model
 
 
-def load_model_from_local(model_id='20220610-021031.pickle'):
+def load_model_from_local(model_id='20220609-203746.pickle'):
 
     model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
     params_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params")
@@ -91,7 +91,7 @@ def load_model_from_local(model_id='20220610-021031.pickle'):
 
     return model, diagnostics
 
-def load_model_from_local_alzheimer(model_id='20220609-173813.pickle'):
+def load_model_from_local_alzheimer(model_id=''):
 
     model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
 
