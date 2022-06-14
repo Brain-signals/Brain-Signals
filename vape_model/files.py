@@ -25,7 +25,7 @@ def NII_to_3Darray(path):
 
 def NII_to_layer(path,slicing=0.6):
     NII = nib.load(path).get_fdata()
-    layer = NII[:,:,int(NII.shape[2]*slicing)]
+    layer = NII[int(NII.shape[0]*slicing),:,:]
     return np.array(layer)
 
 
@@ -112,8 +112,8 @@ def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
             n += 1
 
         file_path = os.path.join(path, file_name)
-        volume = NII_to_3Darray(file_path)
-        volume = crop_volume(volume)
+        volume = NII_to_layer(file_path)
+        # volume = crop_volume(volume)
         volume = resize_and_pad(volume)
 
         X_tmp.append(volume)
@@ -137,7 +137,6 @@ def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
 
     if verbose == 1:
         print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
+        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
 
-    print('Diagnostics processed, good job Team !Get in the batmobile for some new adventures')
     return X,y_mmse

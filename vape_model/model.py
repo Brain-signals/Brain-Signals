@@ -107,10 +107,3 @@ def train_model(model: Model,
     )
 
     return model, history
-
-
-def encoding_y(y):
-    enc = OneHotEncoder(sparse = False)
-    enc.fit(y[['diagnostic']])
-    y_encoded = enc.transform(y[['diagnostic']]).astype('int8')
-    return y_encoded

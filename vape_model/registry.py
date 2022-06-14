@@ -68,7 +68,7 @@ def load_model_from_mlflow(stage="None") -> Model:
     return model
 
 
-def load_model_from_local(model_id='20220609-203746.pickle'):
+def load_model_from_local(model_id=''):
 
     model_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models")
     params_directory = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params")
