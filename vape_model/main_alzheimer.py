@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import os
 
-def preprocess_and_train(eval=False):
+def preprocess_and_train_alzheimer(eval=True):
     """
     Load data in memory, clean and preprocess it, train a Keras model on it,
     save the model, and finally compute & save a performance metric
@@ -17,8 +17,8 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Wonderwall_control',50),
-        ('Wonderwall_alzheimers',150),
+        ('Wonderwall_control',80),
+        ('Wonderwall_alzheimers',200),
     ]
 
     # unchosen_datasets :
@@ -32,11 +32,11 @@ def preprocess_and_train(eval=False):
 
 
     # model params
-    patience = 5
+    patience = 10
     validation_split = 0.25
-    learning_rate = 0.005
+    learning_rate = 0.001
     batch_size = 32
-    epochs = 50
+    epochs = 100
     es_monitor = 'loss'
 
     for dataset in chosen_datasets:
@@ -46,6 +46,8 @@ def preprocess_and_train(eval=False):
             X_tmp,y_tmp = open_dataset_alzheimer(dataset[0],limit=dataset[1],verbose=1)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
+
+    print('Good job Team ! Get in the batmobile for some new adventures\n')
 
     #split the dataset
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3)
@@ -105,4 +107,4 @@ def preprocess_and_train(eval=False):
     pass
 
 if __name__ == '__main__':
-    preprocess_and_train()
+    preprocess_and_train_alzheimer()

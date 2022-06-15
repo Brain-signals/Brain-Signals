@@ -3,6 +3,7 @@ from vape_model.registry import model_to_mlflow, model_to_pickle
 from vape_model.files import open_dataset
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 import numpy as np
 import pandas as pd
