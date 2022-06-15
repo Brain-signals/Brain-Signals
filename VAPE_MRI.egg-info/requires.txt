@@ -15,18 +15,16 @@ psycopg2-binary
 mlflow
 prefect
 prefect[viz]
-psycopg2-binary
 python-multipart
 fastapi
 pytz
 uvicorn
+aiofiles
 httpx
 pytest-asyncio
-streamlit
 Pillow
 python-multipart
 pydantic
-aiofiles
 
 [:sys_platform != "darwin"]
 tensorflow==2.7.0
