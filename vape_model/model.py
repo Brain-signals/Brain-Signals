@@ -1,8 +1,6 @@
 
-from tensorflow.keras import Model, layers, optimizers, Sequential
-import numpy as np
+from tensorflow.keras import layers, optimizers, Sequential
 from tensorflow.keras.callbacks import EarlyStopping
-from sklearn.preprocessing import OneHotEncoder
 from tensorflow.keras.metrics import (TrueNegatives,
                                 TruePositives,
                                 FalseNegatives,
@@ -80,9 +78,9 @@ def initialize_model_alzheimer(width, length, depth,learning_rate=0.001):
     return model
 
 
-def train_model(model: Model,
-                X_train: np.ndarray,
-                y_train: np.ndarray,
+def train_model(model,
+                X_train,
+                y_train,
                 patience,
                 epochs,
                 monitor,
@@ -105,5 +103,11 @@ def train_model(model: Model,
         verbose=verbose,
         callbacks=[es],
     )
+    if not es.best_epoch:
+        best_epoch_index = max(history.epoch)
+        print('No best epoch found, the model will use last epoch as best\n'\
+              'You should try to increase epochs or decrease patience')
+    else:
+        best_epoch_index = es.best_epoch
 
-    return model, history
+    return model, history, best_epoch_index

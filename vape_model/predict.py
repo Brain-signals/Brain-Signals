@@ -9,6 +9,7 @@ def predict_from_volume(volume):
     model, diagnostics = load_model_from_local()
 
     os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
+    print(f'TARGET_RES is {os.environ["TARGET_RES"]}')
 
     vol_crop = crop_volume(volume)
     vol_res = resize_and_pad(vol_crop)

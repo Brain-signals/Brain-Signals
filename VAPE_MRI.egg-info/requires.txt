@@ -1,4 +1,3 @@
-jupyterlab
 numpy
 pandas
 matplotlib
@@ -6,25 +5,14 @@ scikit-learn
 google-cloud-storage
 nibabel
 opencv-python
-imutils
 imageio
-scikit-image
 plotly
-scipy
-psycopg2-binary
 mlflow
-prefect
-prefect[viz]
 python-multipart
 fastapi
-pytz
+streamlit
 uvicorn
-aiofiles
 httpx
-pytest-asyncio
-Pillow
-python-multipart
-pydantic
 
 [:sys_platform != "darwin"]
 tensorflow==2.7.0

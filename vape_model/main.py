@@ -1,4 +1,4 @@
-from vape_model.model import initialize_model,train_model,encoding_y
+from vape_model.model import initialize_model,train_model
 from vape_model.registry import model_to_mlflow, model_to_pickle
 from vape_model.files import open_dataset
 
@@ -17,13 +17,13 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',30),
-        ('MRI_PD_vanicek_control',21),
-        ('MRI_PD1_control',15),
-        ('Wonderwall_control',54),
-        ('MRI_PD1_parkinsons',30),
-        ('MRI_PD_vanicek_parkinsons',20),
-        ('Wonderwall_alzheimers',80),
+        ('Controls',1),
+        ('MRI_PD_vanicek_control',1),
+        ('MRI_PD1_control',1),
+        ('Wonderwall_control',1),
+        ('MRI_PD1_parkinsons',1),
+        ('MRI_PD_vanicek_parkinsons',1),
+        ('Wonderwall_alzheimers',1),
     ]
 
     # unchosen_datasets :
@@ -34,7 +34,7 @@ def preprocess_and_train(eval=False):
     validation_split = 0.25
     learning_rate = 0.0005
     batch_size = 16
-    epochs = 100
+    epochs = 5
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -63,7 +63,7 @@ def preprocess_and_train(eval=False):
                              learning_rate=learning_rate)
 
     #train model
-    model, history = train_model(model,
+    model, history, best_epoch_index = train_model(model,
                                 X_train, y_train,
                                 patience=patience,
                                 monitor=es_monitor,
@@ -73,10 +73,9 @@ def preprocess_and_train(eval=False):
                                 verbose=1)
 
     # compute val_metrics
-    best_epoch = max(history.epoch) - patience
     metrics = {}
     for metric,score in history.history.items():
-        metrics[metric] = score[best_epoch]
+        metrics[metric] = score[best_epoch_index]
 
     # save model
     params = dict(

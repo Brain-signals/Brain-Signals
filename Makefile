@@ -60,3 +60,13 @@ dl_datasets:
 update_registry:
 	@gsutil -m cp -ncr ${LOCAL_REGISTRY_PATH} gs://vape-mri/ || :
 	@gsutil -m cp -ncr gs://vape-mri/registry ${LOCAL_REGISTRY_PATH}/..
+
+docker_start:
+	@docker run -e PORT=8000 -e LOCAL_REGISTRY_PATH=/registry_to_prod \
+	-p 8000:8000 ${MULTI_REGION}/${PROJECT}/${IMAGE}
+
+docker_id:
+	@echo $(shell docker ps -a -q)
+
+streamlit:
+	@streamlit run app/app_v2.py

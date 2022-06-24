@@ -24,4 +24,4 @@ def show_nii_3D(volume):
 
     print(f'shape is {volume.shape}')
 
-    pass
+    return fig

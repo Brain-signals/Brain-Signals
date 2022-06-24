@@ -21,9 +21,9 @@ async def upload_nii(nii_file: UploadFile=File(...)):
 
         vol = NII_to_3Darray(path)
         y_pred = predict_from_volume(vol)
-        pred = []
+        pred = 'unknow'
         for key,value in y_pred.items():
-            if value == 1:
+            if int(round(value)) == 1:
                 pred = key
 
     except Exception:
@@ -33,4 +33,4 @@ async def upload_nii(nii_file: UploadFile=File(...)):
         await nii_file.close()
         os.remove(path)
 
-    return {'pred':pred,}
+    return {'pred':pred}
