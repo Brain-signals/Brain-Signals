@@ -52,7 +52,7 @@ train_model_alzheimer:
 	@python -m vape_model.main_alzheimer
 
 run_api:
-	@uvicorn vape_api.fast_v2:app --reload
+	@uvicorn vape_api.fast_api:app --reload
 
 dl_datasets:
 	@gsutil -m cp -ncr gs://vape-mri/processed_datasets ${DATASETS_PATH}/..
@@ -62,11 +62,11 @@ update_registry:
 	@gsutil -m cp -ncr gs://vape-mri/registry ${LOCAL_REGISTRY_PATH}/..
 
 docker_start:
-	@docker run -e PORT=8000 -e LOCAL_REGISTRY_PATH=/registry_to_prod \
+	@docker run -e PORT=8000 -e LOCAL_REGISTRY_PATH=/registry_for_api \
 	-p 8000:8000 ${MULTI_REGION}/${PROJECT}/${IMAGE}
 
 docker_id:
 	@echo $(shell docker ps -a -q)
 
 streamlit:
-	@streamlit run app/app_v2.py
+	@streamlit run vape_app/streamlit_app.py

@@ -15,17 +15,15 @@ def show_nii_2D(volume):
     slice_z = int(volume.shape[2]/2)
 
     fig, (ax1, ax2, ax3) = plt.subplots(1,3,figsize=(10,4))
-    ax1.imshow(volume[slice_x,:,:])
+    ax1.imshow(volume[slice_x,:,:],cmap='gray')
     ax1.set_title('X axis')
     ax1.tick_params(bottom=False,left=False,labelbottom=False,labelleft=False)
-    ax2.imshow(volume[:,slice_y,:])
+    ax2.imshow(volume[:,slice_y,:],cmap='gray')
     ax2.set_title('Y axis')
     ax2.tick_params(bottom=False,left=False,labelbottom=False,labelleft=False)
-    ax3.imshow(volume[:,:,slice_z])
+    ax3.imshow(volume[:,:,slice_z],cmap='gray')
     ax3.set_title('Z axis')
     ax3.tick_params(bottom=False,left=False,labelbottom=False,labelleft=False)
-
-    print(f'shape is {volume.shape}')
 
     return fig
 

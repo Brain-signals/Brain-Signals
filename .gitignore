@@ -12,7 +12,7 @@ bin-release/
 draft/
 Jupyter_notebook/
 registry/
-
+registry_for_api/
 
 # Executables
 *.swf
