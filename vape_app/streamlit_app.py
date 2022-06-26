@@ -1,4 +1,3 @@
-from http.client import NON_AUTHORITATIVE_INFORMATION
 import streamlit as st
 import requests
 from vape_model.utils import show_nii_3D, show_nii_2D
