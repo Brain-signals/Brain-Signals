@@ -20,8 +20,6 @@ def write_and_load_tmp(nii_file):
         os.remove(path)
     return vol
 
-print('\nNew streamlit run')
-
 st.set_page_config(
     page_title="BrainSignal public API",
     page_icon="🧠",
@@ -36,12 +34,13 @@ st.title('Welcome to BrainSignal public API')
 st.header('Try our API')
 
 API_URL = 'https://vape-mri-image-rxbyapf3mq-ew.a.run.app/predict'
+sample_url = 'https://nifti.nimh.nih.gov/nifti-1/data/avg152T1_LR_nifti.nii.gz'
 #API_URL = 'http://127.0.0.1:8000/predict'
 
 st_file = st.file_uploader(
-    label='👇 Drop your Nifti file here to access other functions',
-    type='nii',
-    help='Only .nii files are accepted yet')
+    label='First we need and 3D MRI image',
+    type=['nii','gz'],
+    help='Only .nii and .nii.gz files are accepted yet')
 
 if st_file is not None:
 
@@ -75,6 +74,10 @@ if st_file is not None:
         st.success(f'your prediction is : {response["pred"]}')
 
     # os.remove(path)
+
+else:
+    st.info(f"""👆 Drop your Nifti file to access other functions\
+        ( you can use [a sample file]({sample_url}) )""")
 
 st.header('About')
 
