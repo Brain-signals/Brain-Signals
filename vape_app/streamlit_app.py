@@ -35,7 +35,6 @@ st.header('Try our API')
 
 API_URL = 'https://vape-mri-image-rxbyapf3mq-ew.a.run.app/predict'
 sample_url = 'https://nifti.nimh.nih.gov/nifti-1/data/avg152T1_LR_nifti.nii.gz'
-#API_URL = 'http://127.0.0.1:8000/predict'
 
 st_file = st.file_uploader(
     label='First we need and 3D MRI image',

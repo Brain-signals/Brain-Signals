@@ -37,7 +37,6 @@ def open_dataset(dataset_name,verbose=0,limit=0):
     start = time.perf_counter()
 
     datasets_path = os.environ.get("DATASETS_PATH")
-    # datasets_path = '/content/drive/MyDrive/6- Bootcamp/VAPE - Brain/Datasets for 3D/'
 
     path = os.path.join(datasets_path, dataset_name)
     info_path = os.path.join(path, 'infos/')

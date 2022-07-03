@@ -25,7 +25,7 @@ def model_to_mlflow(model,model_name:str, params:dict, metrics:dict):
             keras_module="tensorflow.keras",
             registered_model_name=model_name)
 
-    print("\n✅ data saved to mlflow")
+    print("\ndata saved to mlflow")
 
     pass
 
@@ -48,7 +48,7 @@ def model_to_pickle(model, params:dict, metrics:dict):
     model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", suffix + ".pickle")
     model.save(model_path)
 
-    print("\n✅ data saved locally")
+    print("\ndata saved locally")
 
     pass
 
@@ -63,7 +63,7 @@ def load_model_from_mlflow(stage="None") -> Model:
     model_uri = f"models:/{mlflow_model_name}/{stage}"
 
     model = mlflow.keras.load_model(model_uri=model_uri)
-    print("\n✅ model loaded from mlflow")
+    print("\nmodel loaded from mlflow")
 
     return model
 
@@ -87,7 +87,7 @@ def load_model_from_local(model_id=''):
 
     diagnostics = params['diagnostics']
     model = keras.models.load_model(chosen_model_path)
-    print("\n✅ model loaded from local")
+    print("\nmodel loaded from local")
 
     return model, diagnostics
 
@@ -104,6 +104,6 @@ def load_model_from_local_alzheimer(model_id=''):
                 chosen_model_path = model_path
 
     model = keras.models.load_model(chosen_model_path)
-    print("\n✅ model loaded from local")
+    print("\nmodel loaded from local")
 
     return model

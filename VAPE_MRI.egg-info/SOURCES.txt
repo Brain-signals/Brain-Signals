@@ -6,8 +6,7 @@ VAPE_MRI.egg-info/not-zip-safe
 VAPE_MRI.egg-info/requires.txt
 VAPE_MRI.egg-info/top_level.txt
 vape_api/__init__.py
-vape_api/fast.py
-vape_api/fast_v2.py
+vape_api/fast_api.py
 vape_model/__init__.py
 vape_model/files.py
 vape_model/main.py

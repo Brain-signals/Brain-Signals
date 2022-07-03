@@ -13,6 +13,7 @@ draft/
 Jupyter_notebook/
 registry/
 registry_for_api/
+raw_data/
 
 # Executables
 *.swf
@@ -23,6 +24,3 @@ registry_for_api/
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
-
-#rawdata
-~/code/Elise-L/VAPE-MRI/raw_data
