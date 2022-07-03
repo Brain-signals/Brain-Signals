@@ -4,11 +4,11 @@ default:
 	@echo "Please specify a make command. help command might be usefull"
 
 reinstall_package:
-	@pip uninstall -y VAPE-MRI || :
+	@pip uninstall -y ${VIRTUAL_ENV} || :
 	@pip install -e .
 
 hard_uninstall:
-	@pip uninstall -yr requirements.txt VAPE-MRI
+	@pip uninstall -yr requirements.txt ${VIRTUAL_ENV}
 
 GCP_select:
 	@gcloud config set project ${PROJECT}
