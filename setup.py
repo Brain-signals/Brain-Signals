@@ -5,9 +5,9 @@ with open("requirements.txt") as f:
     content = f.readlines()
 requirements = [x.strip() for x in content if "git+" not in x]
 
-setup(name='brain-signal',
+setup(name='Brain-Signals',
       version="0.1",
-      description="brain-signals",
+      description="Brain-Signals",
       license="MIT",
       author="Elise-L",
       author_email="contact@lewagon.org",
