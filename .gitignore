@@ -8,7 +8,7 @@ bin-release/
 .DS_Store
 .settings/
 .python-version
-.env
+# .env
 draft/
 Jupyter_notebook/
 registry/
