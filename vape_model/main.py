@@ -106,7 +106,6 @@ def preprocess_and_train(eval=False):
         metrics_eval = model.evaluate(x=X_test,y=y_test,verbose=1,return_dict=True)
         for metric,score in metrics_eval.items():
             print(f'{metric} is {score}')
-
     pass
 
 if __name__ == '__main__':

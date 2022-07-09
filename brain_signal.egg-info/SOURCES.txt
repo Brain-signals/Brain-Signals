@@ -1,10 +1,10 @@
 setup.py
-VAPE_MRI.egg-info/PKG-INFO
-VAPE_MRI.egg-info/SOURCES.txt
-VAPE_MRI.egg-info/dependency_links.txt
-VAPE_MRI.egg-info/not-zip-safe
-VAPE_MRI.egg-info/requires.txt
-VAPE_MRI.egg-info/top_level.txt
+brain_signal.egg-info/PKG-INFO
+brain_signal.egg-info/SOURCES.txt
+brain_signal.egg-info/dependency_links.txt
+brain_signal.egg-info/not-zip-safe
+brain_signal.egg-info/requires.txt
+brain_signal.egg-info/top_level.txt
 vape_api/__init__.py
 vape_api/fast_api.py
 vape_model/__init__.py
