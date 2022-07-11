@@ -1,10 +1,10 @@
 setup.py
-Brain_Signals.egg-info/PKG-INFO
-Brain_Signals.egg-info/SOURCES.txt
-Brain_Signals.egg-info/dependency_links.txt
-Brain_Signals.egg-info/not-zip-safe
-Brain_Signals.egg-info/requires.txt
-Brain_Signals.egg-info/top_level.txt
+brain_signals.egg-info/PKG-INFO
+brain_signals.egg-info/SOURCES.txt
+brain_signals.egg-info/dependency_links.txt
+brain_signals.egg-info/not-zip-safe
+brain_signals.egg-info/requires.txt
+brain_signals.egg-info/top_level.txt
 vape_api/__init__.py
 vape_api/fast_api.py
 vape_model/__init__.py

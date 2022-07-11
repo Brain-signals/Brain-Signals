@@ -4,10 +4,10 @@ default:
 	@echo "Please specify a make command. help command might be usefull"
 
 reinstall_package:
-	@pip uninstall -y ${VIRTUAL_ENV} && pip install -e .
+	@pip uninstall -y brain-signals && pip install -e .
 
 hard_uninstall:
-	@pip uninstall -yr requirements.txt ${VIRTUAL_ENV}
+	@pip uninstall -yr requirements.txt brain-signals
 
 GCP_select:
 	@gcloud config set project ${PROJECT}
