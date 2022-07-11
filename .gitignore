@@ -7,7 +7,7 @@ bin-release/
 # Other files and folders
 .DS_Store
 .settings/
-.python-version
+# .python-version
 # .env
 draft/
 Jupyter_notebook/
