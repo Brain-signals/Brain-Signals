@@ -41,7 +41,7 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
     model.compile(
       loss="categorical_crossentropy",
       optimizer=adam_opt,
-      metrics=["accuracy", TrueNegatives(), TruePositives(), FalseNegatives(), FalsePositives()],
+      metrics=["accuracy"], # or TrueNegatives(), TruePositives(), FalseNegatives(), FalsePositives()
     )
 
     return model

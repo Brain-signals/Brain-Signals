@@ -1,6 +1,7 @@
 from vape_model.model import initialize_model,train_model
 from vape_model.registry import model_to_mlflow, model_to_pickle
 from vape_model.files import open_dataset
+from vape_model.utils import time_print
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -8,6 +9,7 @@ from sklearn.preprocessing import OneHotEncoder
 import numpy as np
 import pandas as pd
 import os
+import time
 
 def preprocess_and_train(eval=False):
     """
@@ -17,24 +19,24 @@ def preprocess_and_train(eval=False):
     """
 
     chosen_datasets = [
-        ('Controls',1),
-        ('MRI_PD_vanicek_control',1),
-        ('MRI_PD1_control',1),
-        ('Wonderwall_control',1),
-        ('MRI_PD1_parkinsons',1),
-        ('MRI_PD_vanicek_parkinsons',1),
-        ('Wonderwall_alzheimers',1),
+        ('Controls',25), # max = 63
+        ('MRI_PD_vanicek_control',15), # max = 21
+        ('MRI_PD1_control',10), # max = 15
+        ('Wonderwall_control',50), # max = 424
+        ('MRI_PD1_parkinsons',30), # max = 30
+        ('MRI_PD_vanicek_parkinsons',20),  # max = 20
+        ('Wonderwall_alzheimers',60), # max = 197
     ]
 
     # unchosen_datasets :
-    # ('MRI_MS',40)
+    # ('MRI_MS',40) # max = 60
 
     # model params
-    patience = 10
+    patience = 20
     validation_split = 0.25
     learning_rate = 0.0005
     batch_size = 16
-    epochs = 5
+    epochs = 100
     es_monitor = 'val_accuracy'
 
     for dataset in chosen_datasets:
@@ -80,6 +82,7 @@ def preprocess_and_train(eval=False):
     # save model
     params = dict(
         # hyper parameters
+        crop_volume_version=2,
         used_dataset=chosen_datasets,
         diagnostics=diagnostics,
         target_res=target_res,
@@ -109,4 +112,7 @@ def preprocess_and_train(eval=False):
     pass
 
 if __name__ == '__main__':
-    preprocess_and_train()
+    start = time.perf_counter()
+    preprocess_and_train(eval=True)
+    end = time.perf_counter()
+    print('model has been trained',time_print(start,end))

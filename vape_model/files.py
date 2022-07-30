@@ -2,7 +2,8 @@ import nibabel as nib
 import numpy as np
 import os
 import pandas as pd
-from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol
+from vape_model.preprocess import crop_volume, resize_and_pad, normalize_vol, crop_volume_v2
+from vape_model.utils import time_print
 import time
 
 
@@ -57,7 +58,7 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
         file_path = os.path.join(path, file_name)
         volume = NII_to_3Darray(file_path)
-        volume = crop_volume(volume)
+        volume = crop_volume_v2(volume)
         volume = resize_and_pad(volume)
 
         X_tmp.append(volume)
@@ -79,7 +80,8 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
     if verbose == 1:
         print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs\n')
+        print(f'Dataset {dataset_name} processed in {time_print(start,end)}\n')
+
 
     return X,y
 
@@ -136,6 +138,6 @@ def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
 
     if verbose == 1:
         print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {round(end - start, 2)} secs')
+        print(f'Dataset {dataset_name} processed in {time_print(start,end)} secs')
 
     return X,y_mmse
