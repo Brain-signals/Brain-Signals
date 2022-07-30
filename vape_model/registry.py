@@ -46,11 +46,12 @@ def model_to_pickle(model, params:dict, metrics:dict):
 
     # save model
     model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", suffix + ".pickle")
+    model.name = suffix
     model.save(model_path)
 
     print("\ndata saved locally")
 
-    pass
+    return suffix
 
 
 def load_model_from_mlflow(stage="None") -> Model:

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage
 import plotly.graph_objects as go
+import os
 
 def NII_image_shape(path):
     test_load = nib.load(f'{path}').get_fdata()
@@ -58,13 +59,13 @@ def time_print(start,end):
     total_sec = round(end - start, 2)
 
     if total_sec > 7200:
-        time_prompt = f'{total_sec} secs ({round(total_sec/3600,3)} hours)\n'
+        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/3600,3)} hours)\n'
 
     elif total_sec > 120:
-        time_prompt = f'{total_sec} secs ({round(total_sec/60,2)} minutes)\n'
+        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/60,2)} minutes)\n'
 
     else:
-        time_prompt = f'{total_sec} secs\n'
+        time_prompt = f'\033[94m{total_sec} secs\033[0m\n'
 
     return time_prompt
 
@@ -72,13 +73,28 @@ def time_print(start,end):
 def display_model(model):
 
     print(
+
         '''
-        Function to be added.
-        It will show you the settings of the model : resolution, layers etc.
-        The training settings : patience, learning rate, etc.
-        The constitution of the dataset used to train.
-        And finally : user that created it, time, etc.
-        '''
+Function to be added....
+
+It will show you the settings of the model : resolution, layers etc.
+The training settings : patience, learning rate, etc.
+The constitution of the dataset used to train.
+And finally : user that created it, time, etc.
+'''
+
     )
+
+    # registry_path = os.environ.get("LOCAL_REGISTRY_PATH")
+
+    # params_path = os.path.join(registry_path,'params',f'{model.name}.pickle')
+    # with open(params_path, "rb") as f:
+    #     params = pickle.load(f)
+    #     print(params)
+
+    # metrics_path = os.path.join(registry_path,'metrics',f'{model.name}.pickle')
+    # with open(metrics_path, "rb") as f:
+    #     metrics = pickle.load(f)
+    #     print(metrics)
 
     pass

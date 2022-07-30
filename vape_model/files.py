@@ -44,15 +44,24 @@ def open_dataset(dataset_name,verbose=0,limit=0,crop_volume_version=2):
     csv_path = os.path.join(info_path, dataset_name+'.csv')
 
     file_names = pd.read_csv(csv_path)
+
     if limit != 0 :
         file_names = file_names.sample(frac=1).head(limit)
+        if verbose:
+            print(f"Opening \033[94m{dataset_name}\033[0m dataset with a limit of {limit} files.")
+
+    elif limit == 0:
+        if verbose:
+            print(f'Opening \033[94m{dataset_name}\033[0m dataset with no limit of files.')
 
     # put every .nii transformed in a list of array
     X_tmp = []
     n = 1
     for file_name in file_names['file_name']:
         if verbose == 1:
-            print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}')
+            print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}',
+                  end='\r')
+            print('')
             n += 1
 
         file_path = os.path.join(path, file_name)
@@ -67,22 +76,18 @@ def open_dataset(dataset_name,verbose=0,limit=0,crop_volume_version=2):
 
     # transform that list in an array and normalize it
     if verbose == 1:
-        print('.nii files processed. Compiling to X (might take a moment)')
+        print('Nifti files processed and compiled to X.')
     X = np.array(X_tmp)
     X = normalize_vol(X)
 
     # create an array of the diagnostics
-    if verbose == 1:
-            print('Processing diagnostics...')
-
-
     y = file_names[['diagnostic']]
 
     end = time.perf_counter()
 
     if verbose == 1:
-        print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {time_print(start,end)}\n')
+        print('Diagnostics processed.')
+        print(f"Dataset \033[94m{dataset_name}\033[0m processed in {time_print(start,end)}")
 
 
     return X,y
@@ -140,6 +145,6 @@ def open_dataset_alzheimer(dataset_name,verbose=0,limit=0):
 
     if verbose == 1:
         print('Diagnostics processed')
-        print(f'Dataset {dataset_name} processed in {time_print(start,end)} secs')
+        print(f'Dataset {dataset_name} processed in {time_print(start,end)} secs',end = '')
 
     return X,y_mmse

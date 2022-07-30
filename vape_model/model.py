@@ -6,6 +6,10 @@ from tensorflow.keras.metrics import (TrueNegatives,
                                 FalseNegatives,
                                 FalsePositives)
 
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+
 #first model 3dCNN
 def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
     """Build a 3D convolutional neural network model."""
@@ -32,9 +36,8 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
     model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=80, activation="relu"))
-    model.add(layers.Dense(units=40, activation="relu"))
-    model.add(layers.Dense(units=20, activation="relu"))
+    model.add(layers.Dense(units=360, activation="relu"))
+    model.add(layers.Dense(units=60, activation="relu"))
     model.add(layers.Dense(units=number_of_class, activation="softmax"))
 
     adam_opt = optimizers.Adam(learning_rate=learning_rate)

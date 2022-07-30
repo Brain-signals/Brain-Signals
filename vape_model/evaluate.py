@@ -38,9 +38,10 @@ alz_datasets = [('Wonderwall_alzheimers',15) # max = 197
 # load_dataset verbose option
 verbose = 0
 # .evaluate verbose option
-ev_verbose = 0
+ev_verbose = 1
 # display the model
 ml_verbose = 1
+
 
 
 ### Functions ###
@@ -65,9 +66,9 @@ def evaluate_model(model_id):
 
     run = 0
     results = []
-    print(f'Model succefully loaded from {model_path}')
+    print(f'Model succefully loaded from :\n{model_path}\n')
     while run < max_run:
-        print(f"Evaluation : run {run+1} / {max_run}",end="\r")
+        print(f"Evaluation : run {run+1} / {max_run}...",end="\r")
         results.append(score_model(model,diagnostics,
                                    crop_volume_version,
                                    verbose=verbose,
@@ -81,6 +82,8 @@ def evaluate_model(model_id):
     for result in results:
         print(f'for run {run+1} evalution was {result}')
         run += 1
+
+    print('')
 
     for key in results[0].keys():
         tot = 0
@@ -138,7 +141,6 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
 
 
     if 'diagnostic_Alzheimer' in diagnostics:
-        X_a,y_a = open_dataset('Wonderwall_alzheimers',limit=15,)
 
         for dataset in alz_datasets:
             if alz_datasets.index(dataset) == 0:
@@ -176,3 +178,10 @@ if __name__ == '__main__':
     if valid_model:
         end = time.perf_counter()
         print('And',time_print(start,end))
+
+def evaluate_model(model_id):
+    start = time.perf_counter()
+    valid_model = evaluate_model(model_id)
+    if valid_model:
+        end = time.perf_counter()
+        print('And \033[94m',time_print(start,end))
