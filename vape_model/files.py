@@ -31,7 +31,7 @@ def NII_to_layer(path,slicing=0.6):
 
 
 
-def open_dataset(dataset_name,verbose=0,limit=0):
+def open_dataset(dataset_name,verbose=0,limit=0,crop_volume_version=2):
 
     # will fetch the infos.csv in the specified dataset's folder
 
@@ -42,7 +42,6 @@ def open_dataset(dataset_name,verbose=0,limit=0):
     path = os.path.join(datasets_path, dataset_name)
     info_path = os.path.join(path, 'infos/')
     csv_path = os.path.join(info_path, dataset_name+'.csv')
-    print(csv_path)
 
     file_names = pd.read_csv(csv_path)
     if limit != 0 :
@@ -58,7 +57,10 @@ def open_dataset(dataset_name,verbose=0,limit=0):
 
         file_path = os.path.join(path, file_name)
         volume = NII_to_3Darray(file_path)
-        volume = crop_volume_v2(volume)
+        if crop_volume_version == 2:
+            volume = crop_volume_v2(volume)
+        else:
+            volume = crop_volume(volume)
         volume = resize_and_pad(volume)
 
         X_tmp.append(volume)

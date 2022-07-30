@@ -86,10 +86,14 @@ def load_model_from_local(model_id=''):
         params = pickle.load(f)
 
     diagnostics = params['diagnostics']
+    try:
+        crop_volume_version = params['crop_volume_version']
+    except:
+        crop_volume_version = 1
     model = keras.models.load_model(chosen_model_path)
-    print("\nmodel loaded from local")
 
-    return model, diagnostics
+    return model, diagnostics, crop_volume_version
+
 
 def load_model_from_local_alzheimer(model_id=''):
 
@@ -104,6 +108,5 @@ def load_model_from_local_alzheimer(model_id=''):
                 chosen_model_path = model_path
 
     model = keras.models.load_model(chosen_model_path)
-    print("\nmodel loaded from local")
 
     return model

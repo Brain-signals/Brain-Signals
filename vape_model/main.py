@@ -1,7 +1,4 @@
-from vape_model.model import initialize_model,train_model
-from vape_model.registry import model_to_mlflow, model_to_pickle
-from vape_model.files import open_dataset
-from vape_model.utils import time_print
+### External imports ###
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -11,6 +8,42 @@ import pandas as pd
 import os
 import time
 
+### Internal imports ###
+
+from vape_model.model import initialize_model, train_model
+from vape_model.registry import model_to_mlflow, model_to_pickle
+from vape_model.files import open_dataset
+from vape_model.utils import time_print
+
+
+
+### Experimental variables ###
+
+# How to pick for the training set
+chosen_datasets = [('Controls',25), # max = 63
+                   ('MRI_PD_vanicek_control',15), # max = 21
+                   ('MRI_PD1_control',10), # max = 15
+                   ('Wonderwall_control',50), # max = 424
+                   ('MRI_PD1_parkinsons',30), # max = 30
+                   ('MRI_PD_vanicek_parkinsons',20), # max = 20
+                   ('Wonderwall_alzheimers',60), # max = 197
+    ] # ('MRI_MS',40) # max = 60
+
+# crop_volume_version 1 or 2 ?
+crop_volume_version = 1
+
+# model params
+patience = 20
+validation_split = 0.3
+learning_rate = 0.0005
+batch_size = 16
+epochs = 100
+es_monitor = 'val_accuracy'
+
+
+
+### Functions ###
+
 def preprocess_and_train(eval=False):
     """
     Load data in memory, clean and preprocess it, train a Keras model on it,
@@ -18,32 +51,13 @@ def preprocess_and_train(eval=False):
     on a validation set holdout at the `model.fit()` level
     """
 
-    chosen_datasets = [
-        ('Controls',25), # max = 63
-        ('MRI_PD_vanicek_control',15), # max = 21
-        ('MRI_PD1_control',10), # max = 15
-        ('Wonderwall_control',50), # max = 424
-        ('MRI_PD1_parkinsons',30), # max = 30
-        ('MRI_PD_vanicek_parkinsons',20),  # max = 20
-        ('Wonderwall_alzheimers',60), # max = 197
-    ]
-
-    # unchosen_datasets :
-    # ('MRI_MS',40) # max = 60
-
-    # model params
-    patience = 20
-    validation_split = 0.25
-    learning_rate = 0.0005
-    batch_size = 16
-    epochs = 100
-    es_monitor = 'val_accuracy'
-
     for dataset in chosen_datasets:
         if chosen_datasets.index(dataset) == 0:
-            X,y = open_dataset(dataset[0],limit=dataset[1],verbose=1)
+            X,y = open_dataset(dataset[0],limit=dataset[1],
+                            verbose=1,crop_volume_version=crop_volume_version)
         else:
-            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],verbose=1)
+            X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],
+                            verbose=1,crop_volume_version=crop_volume_version)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
 
@@ -82,7 +96,7 @@ def preprocess_and_train(eval=False):
     # save model
     params = dict(
         # hyper parameters
-        crop_volume_version=2,
+        crop_volume_version=crop_volume_version,
         used_dataset=chosen_datasets,
         diagnostics=diagnostics,
         target_res=target_res,
@@ -113,6 +127,6 @@ def preprocess_and_train(eval=False):
 
 if __name__ == '__main__':
     start = time.perf_counter()
-    preprocess_and_train(eval=True)
+    preprocess_and_train()
     end = time.perf_counter()
-    print('model has been trained',time_print(start,end))
+    print('model has been trained in',time_print(start,end))

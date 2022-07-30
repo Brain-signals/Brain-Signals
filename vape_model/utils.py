@@ -58,12 +58,27 @@ def time_print(start,end):
     total_sec = round(end - start, 2)
 
     if total_sec > 7200:
-        time_prompt = f'in {total_sec} secs ({round(total_sec/3600,2)} hours)\n'
+        time_prompt = f'{total_sec} secs ({round(total_sec/3600,3)} hours)\n'
 
     elif total_sec > 120:
-        time_prompt = f'in {total_sec} secs ({round(total_sec/60,2)} minutes)\n'
+        time_prompt = f'{total_sec} secs ({round(total_sec/60,2)} minutes)\n'
 
     else:
-        time_prompt = f'in {total_sec} secs\n'
+        time_prompt = f'{total_sec} secs\n'
 
     return time_prompt
+
+
+def display_model(model):
+
+    print(
+        '''
+        Function to be added.
+        It will show you the settings of the model : resolution, layers etc.
+        The training settings : patience, learning rate, etc.
+        The constitution of the dataset used to train.
+        And finally : user that created it, time, etc.
+        '''
+    )
+
+    pass
