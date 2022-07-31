@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage
 import plotly.graph_objects as go
-import os
 
 def NII_image_shape(path):
     test_load = nib.load(f'{path}').get_fdata()
@@ -54,20 +53,41 @@ def show_nii_3D(volume):
         colorbar=dict(thickness=20, ticklen=4)
         ))
 
+    pass
+
 
 def time_print(start,end):
     total_sec = round(end - start, 2)
 
     if total_sec > 7200:
-        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/3600,3)} hours)\n'
+        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/3600,3)} hours)\033[0m\n'
 
     elif total_sec > 120:
-        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/60,2)} minutes)\n'
+        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/60,2)} minutes)\033[0m\n'
 
     else:
         time_prompt = f'\033[94m{total_sec} secs\033[0m\n'
 
     return time_prompt
+
+
+def check_balance(y_encoded):
+
+    y_encoded = y_encoded.tolist()
+
+    diags = {}
+    for key in range(len(y_encoded[0])):
+        diags[key] = 0
+    for diag in y_encoded:
+        key = diag.index(1)
+        diags[key] +=1
+    total = 0
+    for key in range(len(diags)):
+        total += diags[key]
+    for key,value in diags.items():
+        print(f'diagnostic {key} is {round(value*100/total,2)} % of the dataset')
+
+    pass
 
 
 def display_model(model):
@@ -84,6 +104,8 @@ And finally : user that created it, time, etc.
 '''
 
     )
+
+    # import os
 
     # registry_path = os.environ.get("LOCAL_REGISTRY_PATH")
 

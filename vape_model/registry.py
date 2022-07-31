@@ -32,26 +32,25 @@ def model_to_mlflow(model,model_name:str, params:dict, metrics:dict):
 
 def model_to_pickle(model, params:dict, metrics:dict):
 
-    suffix = strftime("%Y%m%d-%H%M%S")
+    model_id = strftime("%Y%m%d-%H%M%S")
 
     # save params
-    params_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params", suffix + ".pickle")
+    params_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "params", model_id + ".pickle")
     with open(params_path, 'wb') as f:
         pickle.dump(params, f)
 
     # save metrics
-    metrics_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "metrics", suffix + ".pickle")
+    metrics_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "metrics", model_id + ".pickle")
     with open(metrics_path, "wb") as f:
         pickle.dump(metrics, f)
 
     # save model
-    model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", suffix + ".pickle")
-    model.name = suffix
+    model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", model_id + ".pickle")
     model.save(model_path)
 
-    print("\ndata saved locally")
+    print(f"\nModel successfully saved a \n{model_path}")
 
-    return suffix
+    return model_id
 
 
 def load_model_from_mlflow(stage="None") -> Model:

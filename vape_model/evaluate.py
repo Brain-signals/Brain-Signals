@@ -19,7 +19,7 @@ from vape_model.utils import time_print, display_model
 ### Experimental variables ###
 
 # How many evaluation runs ? (dataset picks change every run)
-max_run = 10
+max_run = 20
 
 # How to pick for each evaluation set ?
 ctrl_datasets = [('Controls',4), # max = 63
@@ -38,9 +38,9 @@ alz_datasets = [('Wonderwall_alzheimers',15) # max = 197
 # load_dataset verbose option
 verbose = 0
 # .evaluate verbose option
-ev_verbose = 1
+ev_verbose = 0
 # display the model
-ml_verbose = 1
+ml_verbose = 0
 
 
 
@@ -68,7 +68,7 @@ def evaluate_model(model_id):
     results = []
     print(f'Model succefully loaded from :\n{model_path}\n')
     while run < max_run:
-        print(f"Evaluation : run {run+1} / {max_run}...",end="\r")
+        print(f'Evaluation : run {run+1} / {max_run}...',end='\r')
         results.append(score_model(model,diagnostics,
                                    crop_volume_version,
                                    verbose=verbose,
@@ -76,12 +76,13 @@ def evaluate_model(model_id):
         run += 1
 
     print('Evaluation completed.',end="\r")
-    print('')
+    print('\n')
 
-    run = 0
-    for result in results:
-        print(f'for run {run+1} evalution was {result}')
-        run += 1
+    if verbose or not ev_verbose:
+        run = 0
+        for result in results:
+            print(f'for run {run+1} evalution was {result}')
+            run += 1
 
     print('')
 
@@ -112,8 +113,8 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
                 X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],
                                            verbose=verbose,
                                            crop_volume_version=crop_volume_version)
-                X = np.concatenate((X_c,X_tmp))
-                y = pd.concat((y_c,y_tmp),ignore_index=True)
+                X_c = np.concatenate((X_c,X_tmp))
+                y_c = pd.concat((y_c,y_tmp),ignore_index=True)
 
     else:
         X_c = np.array([])
@@ -131,8 +132,8 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
                 X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],
                                            verbose=verbose,
                                            crop_volume_version=crop_volume_version)
-                X = np.concatenate((X_p,X_tmp))
-                y = pd.concat((y_p,y_tmp),ignore_index=True)
+                X_p = np.concatenate((X_p,X_tmp))
+                y_p = pd.concat((y_p,y_tmp),ignore_index=True)
 
     else:
         X_p = np.array([])
@@ -151,8 +152,8 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
                 X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],
                                            verbose=verbose,
                                            crop_volume_version=crop_volume_version)
-                X = np.concatenate((X_a,X_tmp))
-                y = pd.concat((y_a,y_tmp),ignore_index=True)
+                X_a = np.concatenate((X_a,X_tmp))
+                y_a = pd.concat((y_a,y_tmp),ignore_index=True)
 
     else:
         X_a = np.array([])
@@ -165,6 +166,8 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
     y_encoded = enc.fit_transform(y[['diagnostic']]).astype('int8')
 
     metrics_eval = model.evaluate(x=X,y=y_encoded,verbose=ev_verbose,return_dict=True)
+
+    print('')
 
     return metrics_eval
 
@@ -179,7 +182,7 @@ if __name__ == '__main__':
         end = time.perf_counter()
         print('And',time_print(start,end))
 
-def evaluate_model(model_id):
+def evaluation(model_id):
     start = time.perf_counter()
     valid_model = evaluate_model(model_id)
     if valid_model:

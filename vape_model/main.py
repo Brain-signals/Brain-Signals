@@ -1,5 +1,6 @@
 ### External imports ###
 
+from random import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 
@@ -13,8 +14,8 @@ import time
 from vape_model.model import initialize_model, train_model
 from vape_model.registry import model_to_mlflow, model_to_pickle
 from vape_model.files import open_dataset
-from vape_model.utils import time_print
-from vape_model.evaluate import evaluate_model
+from vape_model.utils import time_print, check_balance
+from vape_model.evaluate import evaluation
 
 
 
@@ -34,18 +35,25 @@ chosen_datasets = [('Controls',25), # max = 63
     ] # ('MRI_MS',40) # max = 60
 
 # crop_volume_version 1 or 2 ?
-crop_volume_version = 1
+crop_volume_version = 2
 
 # model params
-patience = 20
-validation_split = 0.3
+patience = 15
+validation_split = 0.25
 learning_rate = 0.0005
 batch_size = 16
 epochs = 100
 es_monitor = 'val_accuracy'
 
-model_eval = True
+# load_dataset verbose option
+verbose = 1
+# check for dataset's balance
+balance_check = 1
+# training verbose
+tr_verbose = 1
 
+# run evaluation after training
+model_eval = True
 
 ### Functions ###
 
@@ -56,23 +64,34 @@ def preprocess_and_train(model_eval=model_eval):
     on a validation set holdout at the `model.fit()` level
     """
 
+    start = time.perf_counter()
+
     for dataset in chosen_datasets:
         if chosen_datasets.index(dataset) == 0:
             X,y = open_dataset(dataset[0],limit=dataset[1],
-                            verbose=1,crop_volume_version=crop_volume_version)
+                            verbose=verbose,
+                            crop_volume_version=crop_volume_version)
         else:
             X_tmp,y_tmp = open_dataset(dataset[0],limit=dataset[1],
-                            verbose=1,crop_volume_version=crop_volume_version)
+                            verbose=verbose,
+                            crop_volume_version=crop_volume_version)
             X = np.concatenate((X,X_tmp))
             y = pd.concat((y,y_tmp),ignore_index=True)
 
         print(f'{dataset[0]} added to current training dataset\n')
+
+    end = time.perf_counter()
+    print('Training dataset has been created and preprocessed',time_print(start,end))
 
     #encode the y
     enc = OneHotEncoder(sparse = False)
     y_encoded = enc.fit_transform(y[['diagnostic']]).astype('int8')
     number_of_class = len(enc.get_feature_names_out())
     diagnostics = enc.get_feature_names_out()
+
+    X_train, X_test, y_train, y_test = train_test_split(X,y_encoded,
+                                                        test_size=validation_split,
+                                                        shuffle=True)
 
     #initialize model
     target_res = int(os.environ.get('TARGET_RES'))
@@ -82,15 +101,22 @@ def preprocess_and_train(model_eval=model_eval):
                              number_of_class=number_of_class,
                              learning_rate=learning_rate)
 
+    if balance_check == 1:
+        print(f'diagnostics are : {diagnostics}')
+        print('for training')
+        check_balance(y_train)
+        print('for testing')
+        check_balance(y_test)
+
     #train model
     model, history, best_epoch_index = train_model(model,
-                                X, y_encoded,
+                                X_train, y_train,
+                                X_test, y_test,
                                 patience=patience,
                                 monitor=es_monitor,
-                                validation_split = validation_split,
                                 batch_size = batch_size,
                                 epochs=epochs,
-                                verbose=1)
+                                verbose=tr_verbose)
 
     # compute val_metrics
     metrics = {}
@@ -123,10 +149,7 @@ def preprocess_and_train(model_eval=model_eval):
     #                 params=params,
     #                 metrics=metrics)
 
-    if model_eval:
-        evaluate_model(model_id)
-
-    pass
+    return model_id
 
 
 
@@ -134,6 +157,8 @@ def preprocess_and_train(model_eval=model_eval):
 
 if __name__ == '__main__':
     start = time.perf_counter()
-    preprocess_and_train()
+    model_id = preprocess_and_train()
     end = time.perf_counter()
     print('model has been trained in',time_print(start,end))
+    if model_eval:
+        evaluation(model_id)

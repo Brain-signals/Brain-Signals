@@ -46,13 +46,14 @@ def open_dataset(dataset_name,verbose=0,limit=0,crop_volume_version=2):
     file_names = pd.read_csv(csv_path)
 
     if limit != 0 :
-        file_names = file_names.sample(frac=1).head(limit)
+        # file_names = file_names.sample(frac=1).head(limit)
+        file_names = file_names.sample(n=limit)
         if verbose:
-            print(f"Opening \033[94m{dataset_name}\033[0m dataset with a limit of {limit} files.")
+            print(f"Opening {dataset_name} dataset with a limit of {limit} files.")
 
     elif limit == 0:
         if verbose:
-            print(f'Opening \033[94m{dataset_name}\033[0m dataset with no limit of files.')
+            print(f'Opening {dataset_name} dataset with no limit of files.')
 
     # put every .nii transformed in a list of array
     X_tmp = []

@@ -36,8 +36,9 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
     model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=360, activation="relu"))
-    model.add(layers.Dense(units=60, activation="relu"))
+    model.add(layers.Dense(units=80, activation="relu"))
+    model.add(layers.Dense(units=40, activation="relu"))
+    model.add(layers.Dense(units=20, activation="relu"))
     model.add(layers.Dense(units=number_of_class, activation="softmax"))
 
     adam_opt = optimizers.Adam(learning_rate=learning_rate)
@@ -82,15 +83,13 @@ def initialize_model_alzheimer(width, length, depth,learning_rate=0.001):
 
 
 def train_model(model,
-                X_train,
-                y_train,
+                X_train,y_train,
+                X_test,y_test,
                 patience,
                 epochs,
                 monitor,
                 batch_size,
-                validation_split,
                 verbose):
-
 
     es = EarlyStopping(patience=patience,
                        monitor=monitor,
@@ -100,11 +99,13 @@ def train_model(model,
     # Train the model, doing validation at the end of each epoch
     history=model.fit(
         X_train, y_train,
-        validation_split=validation_split,
+        validation_data=(X_test,y_test),
         epochs=epochs,
         batch_size=batch_size,
         verbose=verbose,
         callbacks=[es],
+        workers=4,
+        use_multiprocessing=True
     )
     if not es.best_epoch:
         best_epoch_index = max(history.epoch)
