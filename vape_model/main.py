@@ -19,14 +19,14 @@ from vape_model.evaluate import evaluation
 
 
 
-### Experimental variables ###
+### Settings ###
 
 # How to pick for the training set
 # set 0 as limit to use entire dataset
-chosen_datasets = [('Controls',25), # max = 63
-                   ('MRI_PD_vanicek_control',15), # max = 21
+chosen_datasets = [('Controls',20), # max = 63
+                   ('MRI_PD_vanicek_control',10), # max = 21
                    ('MRI_PD1_control',10), # max = 15
-                   ('Wonderwall_control',50), # max = 424
+                   ('Wonderwall_control',30), # max = 424
 
                    ('MRI_PD1_parkinsons',30), # max = 30
                    ('MRI_PD_vanicek_parkinsons',20), # max = 20
@@ -39,7 +39,7 @@ crop_volume_version = 2
 
 # model params
 patience = 15
-validation_split = 0.25
+validation_split = 0.3
 learning_rate = 0.0005
 batch_size = 16
 epochs = 100
@@ -53,11 +53,11 @@ balance_check = 1
 tr_verbose = 1
 
 # run evaluation after training
-model_eval = True
+model_eval = False
 
 ### Functions ###
 
-def preprocess_and_train(model_eval=model_eval):
+def preprocess_and_train():
     """
     Load data in memory, clean and preprocess it, train a Keras model on it,
     save the model, and finally compute & save a performance metric

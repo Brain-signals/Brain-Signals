@@ -48,7 +48,7 @@ def model_to_pickle(model, params:dict, metrics:dict):
     model_path = os.path.join(os.environ.get("LOCAL_REGISTRY_PATH"), "models", model_id + ".pickle")
     model.save(model_path)
 
-    print(f"\nModel successfully saved a \n{model_path}")
+    print(f"\nModel successfully saved at :\n{model_path}")
 
     return model_id
 

@@ -16,10 +16,10 @@ from vape_model.utils import time_print, display_model
 
 
 
-### Experimental variables ###
+### Settings ###
 
 # How many evaluation runs ? (dataset picks change every run)
-max_run = 20
+max_run = 10
 
 # How to pick for each evaluation set ?
 ctrl_datasets = [('Controls',4), # max = 63
@@ -91,7 +91,7 @@ def evaluate_model(model_id):
         for r in range(max_run):
             tot += results[r][key]
         tot /= max_run
-        print(f'average {key} : {tot}')
+        print(f'average {key} : {round(tot,3)}')
 
     print(f'\nModel # {model_id} has been evaluated after {max_run} runs')
 
@@ -101,6 +101,7 @@ def evaluate_model(model_id):
 def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
 
     os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
+
 
     if 'diagnostic_Healthy' in diagnostics:
 
@@ -120,7 +121,6 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
         X_c = np.array([])
         y_c = pd.Series()
 
-
     if 'diagnostic_Parkinson' in diagnostics:
 
         for dataset in park_datasets:
@@ -138,8 +138,6 @@ def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
     else:
         X_p = np.array([])
         y_p = pd.Series()
-
-
 
     if 'diagnostic_Alzheimer' in diagnostics:
 

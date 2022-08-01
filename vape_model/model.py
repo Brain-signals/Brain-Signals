@@ -33,10 +33,9 @@ def initialize_model(width, length, depth,number_of_class,learning_rate=0.001):
         filters=64,
         kernel_size=2,
         activation="relu",))
-    model.add(layers.MaxPool3D(pool_size=2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dense(units=80, activation="relu"))
+    model.add(layers.Dense(units=120, activation="relu"))
     model.add(layers.Dense(units=40, activation="relu"))
     model.add(layers.Dense(units=20, activation="relu"))
     model.add(layers.Dense(units=number_of_class, activation="softmax"))
