@@ -90,7 +90,6 @@ def crop_volume(volume,slicing_up=0.4,slicing_bot=0.3):
 
 def crop_volume_v2(volume,slicing_up=1,slicing_bot=1):
 
-    roi = []
     left_conts = []
     right_conts = []
     bottom_conts = []

@@ -19,7 +19,7 @@ from vape_model.utils import time_print, display_model
 ### Settings ###
 
 # How many evaluation runs ? (dataset picks change every run)
-max_run = 10
+max_run = 15
 
 # How to pick for each evaluation set ?
 ctrl_datasets = [('Controls',4), # max = 63
@@ -33,7 +33,7 @@ park_datasets = [('MRI_PD1_parkinsons',7), # max = 30
 ]
 
 alz_datasets = [('Wonderwall_alzheimers',15) # max = 197
-    ]
+]
 
 # load_dataset verbose option
 verbose = 0
@@ -66,7 +66,8 @@ def evaluate_model(model_id):
 
     run = 0
     results = []
-    print(f'Model succefully loaded from :\n{model_path}\n')
+    print(f'Model succefully loaded from :\n{model_path}')
+    print(f'( It uses crop volume function version {crop_volume_version} )\n')
     while run < max_run:
         print(f'Evaluation : run {run+1} / {max_run}...',end='\r')
         results.append(score_model(model,diagnostics,

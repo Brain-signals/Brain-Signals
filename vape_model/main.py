@@ -35,10 +35,10 @@ chosen_datasets = [('Controls',20), # max = 63
     ] # ('MRI_MS',40) # max = 60
 
 # crop_volume_version 1 or 2 ?
-crop_volume_version = 2
+crop_volume_version = 1
 
 # model params
-patience = 15
+patience = 20
 validation_split = 0.3
 learning_rate = 0.0005
 batch_size = 16
@@ -54,6 +54,7 @@ tr_verbose = 1
 
 # run evaluation after training
 model_eval = False
+
 
 ### Functions ###
 
