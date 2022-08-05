@@ -1,5 +1,4 @@
 ### External imports ###
-
 from sklearn.preprocessing import OneHotEncoder
 
 import numpy as np
@@ -19,7 +18,7 @@ from vape_model.utils import time_print, display_model
 ### Settings ###
 
 # How many evaluation runs ? (dataset picks change every run)
-max_run = 15
+max_run = 30
 
 # How to pick for each evaluation set ?
 ctrl_datasets = [('Controls',4), # max = 63
@@ -48,7 +47,7 @@ ml_verbose = 0
 
 def evaluate_model(model_id):
 
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
     model_id = model_id.strip('.pickle')[-15:]+'.pickle'
     model_path = f'{os.environ.get("LOCAL_REGISTRY_PATH")}/models/{model_id}'
@@ -64,12 +63,14 @@ def evaluate_model(model_id):
     if ml_verbose:
         display_model(model)
 
-    run = 0
+    run = 1
     results = []
     print(f'Model succefully loaded from :\n{model_path}')
     print(f'( It uses crop volume function version {crop_volume_version} )\n')
-    while run < max_run:
-        print(f'Evaluation : run {run+1} / {max_run}...',end='\r')
+    os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
+    print(f'target_res is {str(model.layers[0].input_shape[1])}')
+    while run <= max_run:
+        print(f'Evaluation : run {run} / {max_run}...',end='\r')
         results.append(score_model(model,diagnostics,
                                    crop_volume_version,
                                    verbose=verbose,
@@ -100,8 +101,6 @@ def evaluate_model(model_id):
 
 
 def score_model(model,diagnostics,crop_volume_version,verbose=0,ev_verbose=1):
-
-    os.environ["TARGET_RES"] = str(model.layers[0].input_shape[1])
 
 
     if 'diagnostic_Healthy' in diagnostics:

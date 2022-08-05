@@ -40,7 +40,7 @@ crop_volume_version = 1
 # model params
 patience = 20
 validation_split = 0.3
-learning_rate = 0.0005
+learning_rate = 0.0003
 batch_size = 16
 epochs = 100
 es_monitor = 'val_accuracy'

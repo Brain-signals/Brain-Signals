@@ -90,7 +90,6 @@ def load_model_from_local(model_id=''):
         crop_volume_version = params['crop_volume_version']
     except:
         crop_volume_version = 1
-    print(f'Crop volume version is {crop_volume_version}')
     model = keras.models.load_model(chosen_model_path)
 
     return model, diagnostics, crop_volume_version
