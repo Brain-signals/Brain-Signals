@@ -19,6 +19,7 @@ async def upload_nii(nii_file: UploadFile=File(...)):
 
         vol = NII_to_3Darray(path)
         y_pred = predict_from_volume(vol)
+        print(y_pred)
         pred = max(y_pred, key=y_pred.get)
 
     except Exception:
@@ -28,4 +29,4 @@ async def upload_nii(nii_file: UploadFile=File(...)):
         await nii_file.close()
         os.remove(path)
 
-    return {'pred':pred}
+    return {'pred': pred}
