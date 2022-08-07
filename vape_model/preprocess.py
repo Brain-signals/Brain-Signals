@@ -165,6 +165,51 @@ def resize_and_pad(volume):
 
     return volume
 
+def resize_and_pad_v2(volume):
+
+    target_res = int(os.environ.get("TARGET_RES"))
+
+    # Get current shape
+    Xaxis_shape = volume.shape[0]
+    Yaxis_shape = volume.shape[1]
+    Zaxis_shape = volume.shape[2]
+
+    # Compute shape factor
+    Xaxis_factor = 1 / ( Xaxis_shape / target_res )
+    Yaxis_factor = 1 / ( Yaxis_shape / target_res )
+    Zaxis_factor = 1 / ( Zaxis_shape / target_res )
+
+    factor = min(Xaxis_factor, Yaxis_factor, Zaxis_factor)
+
+    # Zoom to the target, based on the biggest axis
+    volume = ndimage.zoom(volume, (factor, factor, factor))
+
+
+    # and pad zeros until wanted shape
+    def get_padding(axis_shape):
+
+        zeros_to_add = target_res-axis_shape
+        if zeros_to_add%2 == 0:
+            padding = (int(zeros_to_add/2),int(zeros_to_add/2))
+        else:
+            padding = (int(zeros_to_add//2),int(zeros_to_add//2+1))
+        return padding
+
+
+    def get_padding_Z(axis_shape):
+
+        zeros_to_add = target_res-axis_shape
+        padding = (zeros_to_add,0)
+        return padding
+
+    Xaxis_padding = get_padding(volume.shape[0])
+    Yaxis_padding = get_padding(volume.shape[1])
+    Zaxis_padding = get_padding_Z(volume.shape[2])
+
+    volume = np.pad(volume, (Xaxis_padding, Yaxis_padding, Zaxis_padding), mode='constant')
+
+    return volume
+
 
 
 def normalize_vol(X):
