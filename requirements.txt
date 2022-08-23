@@ -14,8 +14,8 @@ plotly
 mlflow
 python-multipart
 
-fastapi         # API framework
-streamlit
-uvicorn         # Web server
+# fastapi         # API framework
+# streamlit
+# uvicorn         # Web server
 
-httpx           # HTTP client
+# httpx           # HTTP client

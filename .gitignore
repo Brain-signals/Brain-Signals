@@ -6,14 +6,13 @@ bin-release/
 
 # Other files and folders
 .DS_Store
-.settings/
-.python-version
+.Jupyter_notebooks/
 .env
-draft/
-Jupyter_notebook/
-registry/
-registry_for_api/
-raw_data/
+.envrc
+.python-version
+.settings/
+.raw_data/
+.registry/
 
 # Executables
 *.swf
