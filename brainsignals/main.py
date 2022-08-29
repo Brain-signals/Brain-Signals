@@ -4,36 +4,36 @@ import time
 
 ### Internal imports ###
 
-from brainsignals.preprocess import Preprocessor
-from brainsignals.model import Model
 from brainsignals.evaluate import evaluate_model
+from brainsignals.model_class import Model
+from brainsignals.preprocess_class import Preprocessor
 from brainsignals.utils import time_print
 
 
 ### Settings ###
 
-chosen_datasets = [('Controls', 15), # max = 63
-                   ('MRI_PD_vanicek_control', 15), # max = 21
-                   ('MRI_PD1_control', 15), # max = 15
-                   ('Wonderwall_control', 15), # max = 424
+chosen_datasets = [('Controls', 50), # max = 63
+                   ('MRI_PD_vanicek_control', 20), # max = 21
+                   ('MRI_PD1_control', 10), # max = 15
+                   ('Wonderwall_control', 70), # max = 424
 
-                   ('MRI_PD1_parkinsons', 30), # max = 30
-                   ('MRI_PD_vanicek_parkinsons', 20), # max = 20
+                   #('MRI_PD1_parkinsons', 30), # max = 30
+                   #('MRI_PD_vanicek_parkinsons', 20), # max = 20
 
-                   ('Wonderwall_alzheimers', 55), # max = 197
+                   ('Wonderwall_alzheimers', 150), # max = 197
                   ]
 
-target_res = 156
+target_res = 128
 slicing_bot = 0.4
 slicing_top=0.1
-dataset_verbose=1
+dataset_verbose=2
 
 learning_rate=0.0002
 epochs=100
-patience=25
+patience=20
 monitor='val_accuracy'
-batch_size=16
-training_verbose=2
+batch_size=32
+training_verbose=1
 
 max_run=20
 
@@ -62,7 +62,7 @@ def preprocess_and_train():
 
     evaluate_model(my_modele.model_id, max_run=max_run)
 
-    return my_modele.modele_id
+    return my_modele.model_id
 
 
 ### Launch ###

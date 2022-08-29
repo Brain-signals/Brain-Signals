@@ -9,8 +9,8 @@ from sklearn.preprocessing import OneHotEncoder
 
 ### Internal imports ###
 
-from brainsignals.model import Model
-from brainsignals.preprocess import Preprocessor
+from brainsignals.model_class import Model
+from brainsignals.preprocess_class import Preprocessor
 from brainsignals.utils import time_print
 
 
@@ -65,7 +65,7 @@ def evaluate_model(model_id, max_run = 20):
         print(f'average {key} : {round(tot,3)}')
 
     end = time.perf_counter()
-    print(f'\nModel {model_id} has been trained in {time_print(start,end)}.')
+    print(f'\nModel {model_id} has been evaluated in {time_print(start,end)}.')
 
     pass
 
@@ -101,7 +101,7 @@ def score_model(model, dataset_verbose=0, score_verbose=2):
                 y_p = pd.concat((y_p,y_tmp), ignore_index=True)
 
     else:
-        X_p = np.array([])
+        X_p = np.array([[[[]]]])
         y_p = pd.Series()
 
     if 'diagnostic_Alzheimer' in model.diagnostics:
@@ -118,6 +118,8 @@ def score_model(model, dataset_verbose=0, score_verbose=2):
     else:
         X_a = np.array([])
         y_a = pd.Series()
+
+    print(X_c.shape, X_a.shape, X_p.shape)
 
     X = np.concatenate((X_c, X_a, X_p))
     y = pd.concat((y_c, y_a, y_p), ignore_index=True)

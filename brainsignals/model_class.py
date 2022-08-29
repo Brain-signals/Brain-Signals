@@ -12,7 +12,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 ### Internal imports ###
 
 from brainsignals.utils import create_id, time_print
-from brainsignals.preprocess import Preprocessor
+from brainsignals.preprocess_class import Preprocessor
 
 
 ### Classes ###
