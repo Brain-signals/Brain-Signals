@@ -108,11 +108,12 @@ class Model:
         pass
 
 
-    def save_model(self):
+    def save_model(self, creator_comment = ''):
 
         try:
             self.best_epoch # just to check if the model has been trained
 
+            self.creator_comment = creator_comment
             self.model_id = create_id()
             self.model_creator = os.environ.get('USER')
             model_path = os.path.join(os.environ.get('LOCAL_REGISTRY_PATH'), self.model_id)

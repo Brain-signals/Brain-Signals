@@ -70,7 +70,7 @@ def evaluate_model(model_id, max_run = 20):
     pass
 
 
-def score_model(model, dataset_verbose=0, score_verbose=2):
+def score_model(model, dataset_verbose=0, score_verbose=0):
 
     preproc = Preprocessor().initialize_from_model(model)
 

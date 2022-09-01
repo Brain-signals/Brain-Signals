@@ -12,15 +12,15 @@ from brainsignals.utils import time_print
 
 ### Settings ###
 
-chosen_datasets = [('Controls', 50), # max = 63
-                   ('MRI_PD_vanicek_control', 20), # max = 21
+chosen_datasets = [('Controls', 15), # max = 63
+                   ('MRI_PD_vanicek_control', 12), # max = 21
                    ('MRI_PD1_control', 10), # max = 15
-                   ('Wonderwall_control', 70), # max = 424
+                   ('Wonderwall_control', 23), # max = 424
 
-                   #('MRI_PD1_parkinsons', 30), # max = 30
-                   #('MRI_PD_vanicek_parkinsons', 20), # max = 20
+                   ('MRI_PD1_parkinsons', 30), # max = 30
+                   ('MRI_PD_vanicek_parkinsons', 20), # max = 20
 
-                   ('Wonderwall_alzheimers', 150), # max = 197
+                   ('Wonderwall_alzheimers', 55), # max = 197
                   ]
 
 target_res = 128
@@ -35,7 +35,7 @@ monitor='val_accuracy'
 batch_size=32
 training_verbose=1
 
-max_run=20
+max_run=30
 
 
 ### Functions ###
