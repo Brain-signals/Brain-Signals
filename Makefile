@@ -14,6 +14,9 @@ train_model:
 dl_datasets:
 	@gsutil -m cp -ncr gs://vape-mri/processed_datasets ${DATASETS_PATH}/..
 
+dl_raw_datasets:
+	@gsutil -m cp -ncr gs://vape-mri/raw_datasets ${DATASETS_PATH}/..
+
 update_registry:
 	@gsutil -m cp -ncr ${LOCAL_REGISTRY_PATH} gs://vape-mri/ || :
 	@gsutil -m cp -ncr gs://vape-mri/registry ${LOCAL_REGISTRY_PATH}/..
