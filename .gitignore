@@ -5,14 +5,11 @@ bin-release/
 [Bb]in/
 
 # Other files and folders
-.DS_Store
 .Jupyter_notebooks/
 .env
 .envrc
+.gitignore
 .python-version
-.settings/
-.raw_data/
-.registry/
 
 # Executables
 *.swf
