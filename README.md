@@ -1,3 +1,4 @@
+
 # Brain-Signals
 
 ## Setup the project
@@ -10,7 +11,7 @@ Please follow this guidelines to setup everything you need.
 ```
 ### Environment Variables
 
-Create a *.env* file then add this variables :
+Create a `.env` file then add this variables :
 
 `DATASETS_PATH` directory where the datasets are stored
 
@@ -26,7 +27,7 @@ Allow direnv with
 ```
 ### Gitignore
 
-Create a *.gitignore* file, and add all the files you created.
+Create a `.gitignore` file, and add all the files you created.
 
 Here is an example :
 ```
@@ -46,6 +47,9 @@ Here is an example :
 # Executables
 *.egg-info
 ```
-## You can now train a model
+### You can now train a model
 
 Check on main.py to understand how the program works
+
+# Notion
+Access the project's [Notion](https://www.notion.so/Brain-signal-61cb427d38804549a3bd49b269f6fb0b) to check the roadmap and bible.
