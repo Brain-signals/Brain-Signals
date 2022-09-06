@@ -108,7 +108,7 @@ class Model:
         pass
 
 
-    def save_model(self, creator_comment = ''):
+    def save_model(self, creator_comment = None):
 
         try:
             self.best_epoch # just to check if the model has been trained
