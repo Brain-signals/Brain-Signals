@@ -11,7 +11,7 @@ bin-release/
 .envrc
 .python-version
 .settings/
-.raw_data/
+.data/
 .registry/
 
 # Executables
