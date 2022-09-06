@@ -11,7 +11,7 @@ nibabel
 opencv-python
 imageio
 plotly
-mlflow
+#mlflow
 python-multipart
 
 # fastapi         # API framework
