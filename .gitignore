@@ -9,10 +9,10 @@ bin-release/
 .Jupyter_notebooks/
 .env
 .envrc
+.data
+.gitignore
 .python-version
-.settings/
-.data/
-.registry/
+.registry
 
 # Executables
 *.swf

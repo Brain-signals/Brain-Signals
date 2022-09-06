@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import os
+import sys
 import time
 from sklearn.preprocessing import OneHotEncoder
 
@@ -45,11 +46,11 @@ def evaluate_model(model_id, max_run = 20):
 
     while run <= max_run:
         print(' '*40, end='\r', flush=True)
-        print(f'Evaluation : run {run} / {max_run}...',end='\r', flush=True)
+        print(f'Evaluation : run {run} / {max_run}', end='\r', flush=True)
         results.append(score_model(model))
         run += 1
 
-    print('Evaluation completed.', end="\r")
+    print('Evaluation completed.', ' '*10, end="\r")
     print('\n')
 
     run = 0
@@ -65,7 +66,7 @@ def evaluate_model(model_id, max_run = 20):
         print(f'average {key} : {round(tot,3)}')
 
     end = time.perf_counter()
-    print(f'\nModel {model_id} has been evaluated in {time_print(start,end)}.')
+    print(f'\nModel {model_id} has been evaluated in {time_print(start,end)}')
 
     pass
 
@@ -119,8 +120,6 @@ def score_model(model, dataset_verbose=0, score_verbose=0):
         X_a = np.array([])
         y_a = pd.Series()
 
-    print(X_c.shape, X_a.shape, X_p.shape)
-
     X = np.concatenate((X_c, X_a, X_p))
     y = pd.concat((y_c, y_a, y_p), ignore_index=True)
 
@@ -129,6 +128,11 @@ def score_model(model, dataset_verbose=0, score_verbose=0):
 
     metrics_eval = model.model.evaluate(x=X, y=y_encoded, verbose=score_verbose, return_dict=True)
 
-    print('')
-
     return metrics_eval
+
+
+### Launch ###
+
+if __name__ == '__main__':
+    model_id = sys.argv[1]
+    evaluate_model(model_id, max_run=25)

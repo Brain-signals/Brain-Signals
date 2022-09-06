@@ -1,6 +1,7 @@
 ### External imports ###
 
 import time
+from datetime import datetime
 
 ### Internal imports ###
 
@@ -26,21 +27,24 @@ chosen_datasets = [('Controls', 15), # max = 63
 target_res = 128
 slicing_bot = 0.4
 slicing_top=0.1
-dataset_verbose=2
+dataset_verbose=0
 
 learning_rate=0.0002
 epochs=100
 patience=20
 monitor='val_accuracy'
 batch_size=32
-training_verbose=1
+training_verbose=0
 
-max_run=30
+max_run=25
 
 
 ### Functions ###
 
 def preprocess_and_train():
+    current_time = datetime.now().strftime('%a %d at %H:%M:%S')
+    print(f'\npreprocess_and_train launched on {current_time}')
+
     my_modele = Model()
     my_preproc = Preprocessor()
 
@@ -68,7 +72,8 @@ def preprocess_and_train():
 ### Launch ###
 
 if __name__ == '__main__':
-    start = time.perf_counter()
-    model_id = preprocess_and_train()
-    end = time.perf_counter()
-    print(f'Model {model_id} has been created and evaluated in',time_print(start,end))
+    while True:
+        start = time.perf_counter()
+        model_id = preprocess_and_train()
+        end = time.perf_counter()
+        print(f'Model {model_id} has been created and evaluated in',time_print(start,end))

@@ -60,9 +60,9 @@ def show_nii_2D(volume):
 def time_print(start,end):
     total_sec = round(end - start, 2)
     if total_sec > 7200:
-        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/3600,3)} hours)\033[0m'
+        time_prompt = f'\033[1m{total_sec} secs ({round(total_sec/3600,3)} hours)\033[0m'
     elif total_sec > 120:
-        time_prompt = f'\033[94m{total_sec} secs ({round(total_sec/60,2)} minutes)\033[0m'
+        time_prompt = f'\033[1m{total_sec} secs ({round(total_sec/60,2)} minutes)\033[0m'
     else:
-        time_prompt = f'\033[94m{total_sec} secs\033[0m'
+        time_prompt = f'\033[1m{total_sec} secs\033[0m'
     return time_prompt
