@@ -6,7 +6,7 @@
 Please follow this guidelines to setup everything you need.
 ### Create the virtualenv
 
-```bash
+```
 pyenv virtualenv brain-signals && pyenv local brain-signals
 ```
 ### Environment Variables
@@ -21,7 +21,7 @@ Create a `.env` file then add this variables :
 
 Example : 
 
-```bash
+```
 # absolute path required, no slash at the end
 DATASETS_PATH=/home/<user>/code/<githubuser>/Brain-Signals/.data/processed_datasets
 LOCAL_REGISTRY_PATH=/home/<user>/code/<githubuser>/Brain-Signals/.registry
@@ -32,7 +32,7 @@ LOCAL_REGISTRY_PATH=/home/<user>/code/<githubuser>/Brain-Signals/.registry
 
 Allow direnv with
 
-```bash
+```
 direnv allow
 ```
 ### Gitignore
@@ -40,6 +40,7 @@ direnv allow
 Create a `.gitignore` file, and add all the files you created.
 
 Here is an example :
+
 ```
 # System file and folders
 .DS_Store
