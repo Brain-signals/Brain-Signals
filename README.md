@@ -44,6 +44,7 @@ Here is an example :
 # System file and folders
 .DS_Store
 .python-version
+__pycache__/
 
 # Personnal things
 .Jupyter_notebooks/
