@@ -7,9 +7,11 @@ Please follow this guidelines to setup everything you need.
 ### Create the virtualenv
 
 ```bash
-  pyenv virtualenv brain-signals && pyenv local brain-signals
+pyenv virtualenv brain-signals && pyenv local brain-signals
 ```
 ### Environment Variables
+
+Create a `.envrc` file the write `dotenv` in it
 
 Create a `.env` file then add this variables :
 
@@ -17,13 +19,21 @@ Create a `.env` file then add this variables :
 
 `LOCAL_REGISTRY_PATH` directory where the models are stored
 
+Example : 
+
+```bash
+# absolute path required, no slash at the end
+DATASETS_PATH=/home/<user>/code/<githubuser>/Brain-Signals/.data/processed_datasets
+LOCAL_REGISTRY_PATH=/home/<user>/code/<githubuser>/Brain-Signals/.registry
+```
+
 
 ### Direnv
 
 Allow direnv with
 
 ```bash
-  direnv allow
+direnv allow
 ```
 ### Gitignore
 
