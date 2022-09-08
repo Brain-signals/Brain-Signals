@@ -139,9 +139,11 @@ class Model:
 
         try:
             with open(model_path, 'rb') as f:
-                loaded = pickle.load(f)
+                loaded_model = pickle.load(f)
             print(f'Model loaded from {model_path}')
-            return loaded
+            if loaded_model.creator_comment:
+                print(loaded_model.creator_comment)
+            return loaded_model
 
         except FileNotFoundError:
             print(f'ERROR : Model not found at {model_path}.\n'\

@@ -22,7 +22,7 @@ def check_balance(y_encoded):
     for key in range(len(diags)):
         total += diags[key]
     for key,value in diags.items():
-        print(f'diagnostic {key} is {round(value*100/total,2)} % of the dataset')
+        print(f'diagnostic {key} represents {round(value*100/total,2)} % of the dataset')
     pass
 
 

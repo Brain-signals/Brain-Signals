@@ -19,7 +19,7 @@ Create a `.env` file then add this variables :
 
 `LOCAL_REGISTRY_PATH` directory where the models are stored
 
-Example : 
+Example :
 
 ```
 # absolute path required, no slash at the end

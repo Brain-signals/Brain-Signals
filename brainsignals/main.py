@@ -8,35 +8,35 @@ from datetime import datetime
 from brainsignals.evaluate import evaluate_model
 from brainsignals.model_class import Model
 from brainsignals.preprocess_class import Preprocessor
-from brainsignals.utils import time_print
+from brainsignals.utils import time_print, check_balance
 
 
 ### Settings ###
 
-chosen_datasets = [('Controls', 15), # max = 63
-                   ('MRI_PD_vanicek_control', 12), # max = 21
+chosen_datasets = [('Controls', 45), # max = 63
+                   ('MRI_PD_vanicek_control', 15), # max = 21
                    ('MRI_PD1_control', 10), # max = 15
-                   ('Wonderwall_control', 23), # max = 424
+                   ('Wonderwall_control', 90), # max = 424
 
-                   ('MRI_PD1_parkinsons', 30), # max = 30
-                   ('MRI_PD_vanicek_parkinsons', 20), # max = 20
+                   #('MRI_PD1_parkinsons', 30), # max = 30
+                   #('MRI_PD_vanicek_parkinsons', 20), # max = 20
 
-                   ('Wonderwall_alzheimers', 55), # max = 197
+                   ('Wonderwall_alzheimers', 160), # max = 197
                   ]
 
-target_res = 128
+target_res = 96
 slicing_bot = 0.4
 slicing_top=0.1
-dataset_verbose=0
+dataset_verbose=1
 
 learning_rate=0.0002
 epochs=100
 patience=20
 monitor='val_accuracy'
 batch_size=32
-training_verbose=0
+training_verbose=1
 
-max_run=25
+max_run=10
 
 
 ### Functions ###
@@ -53,6 +53,8 @@ def preprocess_and_train():
                                        slicing_top=slicing_top)
     X, y = my_preproc.create_dataset(chosen_datasets, verbose=dataset_verbose)
 
+    check_balance(y)
+
     my_modele.initialize_model(my_preproc,
                                learning_rate=learning_rate)
     my_modele.train_model(X, y,
@@ -62,7 +64,7 @@ def preprocess_and_train():
                         batch_size=batch_size,
                         verbose=training_verbose)
 
-    my_modele.save_model()
+    my_modele.save_model(creator_comment='lets train on alzheimer and control only')
 
     evaluate_model(my_modele.model_id, max_run=max_run)
 

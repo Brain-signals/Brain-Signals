@@ -71,7 +71,7 @@ def evaluate_model(model_id, max_run = 20):
     pass
 
 
-def score_model(model, dataset_verbose=0, score_verbose=0):
+def score_model(model, dataset_verbose=0, score_verbose=1):
 
     preproc = Preprocessor().initialize_from_model(model)
 
@@ -87,7 +87,7 @@ def score_model(model, dataset_verbose=0, score_verbose=0):
                 y_c = pd.concat((y_c,y_tmp), ignore_index=True)
 
     else:
-        X_c = np.array([])
+        X_c = np.array(None)
         y_c = pd.Series()
 
     if 'diagnostic_Parkinson' in model.diagnostics:
@@ -102,7 +102,7 @@ def score_model(model, dataset_verbose=0, score_verbose=0):
                 y_p = pd.concat((y_p,y_tmp), ignore_index=True)
 
     else:
-        X_p = np.array([[[[]]]])
+        X_p = np.array(None)
         y_p = pd.Series()
 
     if 'diagnostic_Alzheimer' in model.diagnostics:
@@ -117,11 +117,32 @@ def score_model(model, dataset_verbose=0, score_verbose=0):
                 y_a = pd.concat((y_a,y_tmp), ignore_index=True)
 
     else:
-        X_a = np.array([])
+        X_a = np.array(None)
         y_a = pd.Series()
 
-    X = np.concatenate((X_c, X_a, X_p))
-    y = pd.concat((y_c, y_a, y_p), ignore_index=True)
+    if X_c.any() and X_a.any() and X_p.any():
+        X = np.concatenate((X_c, X_a, X_p))
+        y = pd.concat((y_c, y_a, y_p), ignore_index=True)
+
+    elif X_c.any() and X_a.any():
+        X = np.concatenate((X_c, X_a))
+        y = pd.concat((y_c, y_a), ignore_index=True)
+
+    elif X_a.any() and X_p.any():
+        X = np.concatenate((X_a, X_p))
+        y = pd.concat((y_a, y_p), ignore_index=True)
+
+    elif X_c.any() and X_p.any():
+        X = np.concatenate((X_c, X_p))
+        y = pd.concat((y_c, y_p), ignore_index=True)
+
+    else:
+        if X_c.any():
+            return X_c, y_c
+        elif X_a.any():
+            return X_a, y_a
+        else:
+            return X_p, y_p
 
     enc = OneHotEncoder(sparse = False)
     y_encoded = enc.fit_transform(y[['diagnostic']]).astype('int8')

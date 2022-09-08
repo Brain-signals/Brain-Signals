@@ -27,7 +27,8 @@ class Preprocessor:
         self.slicing_bot = slicing_bot
         self.slicing_top = slicing_top
         self.target_res = target_res
-        pass
+        self.files_used = []
+        return self
 
 
 
@@ -35,7 +36,7 @@ class Preprocessor:
 
         try:
             start = time.perf_counter()
-            self.files_used = []
+
             if verbose > 0:
                 print('\nCreating training dataset...')
 
