@@ -3,7 +3,7 @@
 
 ## Setup the project
 
-Please follow this guidelines to setup everything you need.
+Please follow this guidelines to setup everything you need after you cloned the project.
 ### Create the virtualenv
 
 ```
