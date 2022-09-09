@@ -8,7 +8,7 @@ from datetime import datetime
 from brainsignals.evaluate import evaluate_model
 from brainsignals.model_class import Model
 from brainsignals.preprocess_class import Preprocessor
-from brainsignals.utils import time_print, check_balance
+from brainsignals.utils import time_print
 
 
 ### Settings ###
@@ -34,9 +34,9 @@ epochs=100
 patience=20
 monitor='val_accuracy'
 batch_size=32
-training_verbose=1
+training_verbose=2
 
-max_run=10
+max_run=25
 
 
 ### Functions ###
@@ -52,8 +52,6 @@ def preprocess_and_train():
                                        slicing_bot=slicing_bot,
                                        slicing_top=slicing_top)
     X, y = my_preproc.create_dataset(chosen_datasets, verbose=dataset_verbose)
-
-    check_balance(y)
 
     my_modele.initialize_model(my_preproc,
                                learning_rate=learning_rate)

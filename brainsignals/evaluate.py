@@ -71,7 +71,7 @@ def evaluate_model(model_id, max_run = 20):
     pass
 
 
-def score_model(model, dataset_verbose=0, score_verbose=1):
+def score_model(model, dataset_verbose=0, score_verbose=0):
 
     preproc = Preprocessor().initialize_from_model(model)
 
@@ -88,7 +88,6 @@ def score_model(model, dataset_verbose=0, score_verbose=1):
 
     else:
         X_c = np.array(None)
-        y_c = pd.Series()
 
     if 'diagnostic_Parkinson' in model.diagnostics:
 
@@ -103,7 +102,6 @@ def score_model(model, dataset_verbose=0, score_verbose=1):
 
     else:
         X_p = np.array(None)
-        y_p = pd.Series()
 
     if 'diagnostic_Alzheimer' in model.diagnostics:
 
@@ -118,7 +116,6 @@ def score_model(model, dataset_verbose=0, score_verbose=1):
 
     else:
         X_a = np.array(None)
-        y_a = pd.Series()
 
     if X_c.any() and X_a.any() and X_p.any():
         X = np.concatenate((X_c, X_a, X_p))

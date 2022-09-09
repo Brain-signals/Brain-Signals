@@ -11,7 +11,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 ### Internal imports ###
 
-from brainsignals.utils import create_id, time_print
+from brainsignals.utils import create_id, time_print, check_balance
 from brainsignals.preprocess_class import Preprocessor
 
 
@@ -83,7 +83,6 @@ class Model:
                                restore_best_weights = True)
 
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=validation_split, shuffle=True)
-
 
             history = self.model.fit(X_train, y_train,
                                      validation_data=(X_test,y_test), epochs=epochs,
