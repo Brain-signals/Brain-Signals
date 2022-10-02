@@ -1,9 +1,18 @@
 
 # Brain-Signals
 
-## Setup the project
+## Online API
+
+Under construction ...
+
+## Setup
+
+<details>
+  <summary>How to train model on your data</summary>
+<br/>
 
 Please follow this guidelines to setup everything you need after you cloned the project.
+
 ### Create the virtualenv
 
 ```
@@ -63,5 +72,7 @@ __pycache__/
 
 Check on main.py to understand how the program works
 
-# Notion
+</details>
+
+## Notion
 Access the project's [Notion](https://www.notion.so/Brain-signal-61cb427d38804549a3bd49b269f6fb0b) to check the roadmap and bible.
