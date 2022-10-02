@@ -1,6 +1,6 @@
 ### External imports ###
 
-import numpy as np
+import glob
 import os
 from fastapi import FastAPI, UploadFile, File
 
@@ -18,7 +18,13 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {'message':'API is running'}
+    return {'API_status':'Running'}
+
+
+@app.get("/list/")
+def list():
+    model_list = glob.glob(f'{os.environ.get("LOCAL_REGISTRY_PATH")}/*')
+    return {'models_found':model_list}
 
 
 @app.get("/model/")
