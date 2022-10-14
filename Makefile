@@ -18,8 +18,6 @@ update_registry:
 	@gsutil -m cp -nc ${LOCAL_REGISTRY_PATH}/* gs://vape-mri/registry || :
 	@gsutil -m cp -nc gs://vape-mri/registry/* ${LOCAL_REGISTRY_PATH}
 
-run_api:
-	@uvicorn brainsignals.api:app --reload
 
 help:
 	@echo "\nHelp for the VAPE-MRI project package Makefile"
