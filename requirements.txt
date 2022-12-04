@@ -2,17 +2,17 @@ tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version
 tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version
 tensorflow==2.10.0; sys_platform != 'darwin'
 # python == 3.8.13
-numpy
-pandas
-matplotlib
-scikit-learn
-google-cloud-storage
-nibabel
-opencv-python
-imageio
-plotly
+numpy==1.23.3
+pandas==1.5.0
+matplotlib==3.6.0
+scikit-learn==1.1.2
+google-cloud-storage==2.5.0
+nibabel==4.0.2
+opencv-python==4.6.0.66
+imageio==2.22.0
+plotly==5.10.0
 #mlflow
-python-multipart
+python-multipart==0.0.5
 
 #fastapi         # API framework
 # streamlit
