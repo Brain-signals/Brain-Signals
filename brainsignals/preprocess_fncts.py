@@ -14,7 +14,10 @@ def compute_roi(contour):
 
 
 def compute_shape(target_res, slicing_bot=0.3, slicing_top=0.15):
-    Z_dim = (target_res-int(target_res*slicing_top))-int(target_res*slicing_bot)-1
+    if slicing_bot == 0 and slicing_top == 0:
+        Z_dim = target_res
+    else:
+        Z_dim = (target_res-int(target_res*slicing_top))-int(target_res*slicing_bot)-1
     return (target_res, target_res, Z_dim)
 
 
