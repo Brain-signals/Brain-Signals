@@ -27,7 +27,6 @@ def crop_volume(volume):
     bottom_conts = []
     top_conts = []
 
-
     first_layer_checked = int(volume.shape[2] * 0.2)
     last_layer_checked = volume.shape[2]
     norm_vol = cv2.normalize(volume, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
@@ -57,6 +56,15 @@ def crop_volume(volume):
     return volume[:, :, 0:max_zs]
 
 
+def flip_volume(volume, input_orient, output_orient='z+y+'):
+    axis_encode = {'x':0, 'y':1, 'z':2}
+    if input_orient[1] != output_orient[1]:
+        volume = np.flip(volume,axis_encode[output_orient[0]])
+    if input_orient[3] != output_orient[3]:
+        volume = np.flip(volume,axis_encode[output_orient[2]])
+    return volume
+
+
 def get_brain_contour_nii(img):
 
     # convert nifti slice to cv2 image
@@ -75,7 +83,6 @@ def get_brain_contour_nii(img):
     for c in contours:
         # retrieve bounding box
         left, bottom, right, top = compute_roi(c)
-        # print(left,right,bottom,top)
 
         # compute ROI area => the biggest wins
         area = (right-left) * (top-bottom)
@@ -121,7 +128,6 @@ def resize_and_pad(volume, target_res):
     # Zoom to the target, based on the biggest axis
     volume = ndimage.zoom(volume, (factor, factor, factor))
 
-
     # and pad zeros until wanted shape
     Xaxis_padding = get_padding(volume.shape[0], target_res)
     Yaxis_padding = get_padding(volume.shape[1], target_res)
@@ -132,7 +138,31 @@ def resize_and_pad(volume, target_res):
     return volume
 
 
+def rotate_volume(volume, input_orient, output_orient='z+y+'):
+    if input_orient == output_orient:
+        return volume
+    else:
+        volume = swap_volume(volume, input_orient, output_orient)
+        volume = flip_volume(volume, input_orient, output_orient)
+    return volume
+
+
 def slice_volume(volume, slicing_bot=0.4, slicing_top=0.2):
     bot_i = int(volume.shape[2] * slicing_bot)
     top_i = int(volume.shape[2] - volume.shape[2] * slicing_top)
     return volume[:,:,bot_i:top_i]
+
+
+def swap_volume(volume,input_orient,output_orient='z+y+'):
+    axis_encode = {'x':0, 'y':1, 'z':2}
+    if input_orient[0] == output_orient[2] and input_orient[2] == output_orient[0]:
+        volume = np.swapaxes(volume, axis_encode[input_orient[0]], axis_encode[input_orient[2]])
+    elif input_orient[0] == output_orient[0] and input_orient[2] != output_orient[2]:
+        volume = np.swapaxes(volume,0,2)
+    elif input_orient[2] == output_orient[2] and input_orient[0] != output_orient[0] :
+        volume = np.swapaxes(volume,1,2)
+    elif input_orient[0] == output_orient[2]:
+        volume = np.swapaxes(np.swapaxes(volume,2,1),1,0)
+    elif input_orient[2] == output_orient[0]:
+        volume = np.swapaxes(np.swapaxes(volume,2,0),1,0)
+    return volume
