@@ -12,7 +12,7 @@ from sklearn.preprocessing import OneHotEncoder
 from brainsignals.utils import NII_to_3Darray, time_print
 from brainsignals.preprocess_fncts import (compute_shape, crop_volume,
                                            resize_and_pad, slice_volume,
-                                           normalize_vol)
+                                           normalize_vol, rotate_volume)
 
 
 ### Classes ###
@@ -77,8 +77,9 @@ class Preprocessor:
         path = os.path.join(datasets_path, dataset_name)
         info_path = os.path.join(path, 'infos/')
         csv_path = os.path.join(info_path, dataset_name+'.csv')
+        orientation_path = os.path.join(datasets_path,'orientation.csv')
 
-        file_names = pd.read_csv(csv_path)
+        file_names = pd.read_csv(csv_path).merge(pd.read_csv(orientation_path), on='file_name')
         if limit != 0 :
             file_names = file_names.sample(n=limit)
 
@@ -86,17 +87,18 @@ class Preprocessor:
             print(f'\nOpening {dataset_name} dataset...')
         X_tmp = []
         n = 1
-        for file_name in file_names['file_name']:
+        for index, row in file_names.iterrows():
 
-            self.files_used.append(file_name)
+            self.files_used.append(row.file_name)
 
             if verbose > 0:
                 print(' '*70, end='\r', flush=True)
-                print(f'processing file {n}/{len(file_names["file_name"])} : {file_name}', end='\r', flush=True)
+                print(f'processing file {n}/{len(file_names["file_name"])} : {row.file_name}', end='\r', flush=True)
                 n += 1
 
-            file_path = os.path.join(path, file_name)
+            file_path = os.path.join(path, row.file_name)
             volume = NII_to_3Darray(file_path)
+            volume = rotate_volume(volume, input_orient=row.orientation)
             volume = crop_volume(volume)
             volume = resize_and_pad(volume, self.target_res)
             volume = slice_volume(volume, self.slicing_bot, self.slicing_top)
