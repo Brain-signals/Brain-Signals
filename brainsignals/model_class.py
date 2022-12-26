@@ -57,7 +57,7 @@ class Model:
 
         self.model = model
 
-        pass
+        return self
 
 
 
@@ -131,7 +131,7 @@ class Model:
 
 
 
-    def load_model(self, model_id):
+    def load_model(self, model_id, verbose=1):
 
         model_id = model_id[-20:]
         model_path = os.path.join(os.environ.get('LOCAL_REGISTRY_PATH'), model_id)
@@ -139,22 +139,23 @@ class Model:
         try:
             with open(model_path, 'rb') as f:
                 loaded_model = pickle.load(f)
-            print(f'Model loaded from {model_path}')
-            if loaded_model.creator_comment:
-                print(loaded_model.creator_comment)
+            if verbose:
+                print(f'Model loaded from {model_path}')
+                if loaded_model.creator_comment:
+                    print(loaded_model.creator_comment)
             return loaded_model
 
         except FileNotFoundError:
             print(f'ERROR : Model not found at {model_path}.\n'\
                   'Make sure you updated LOCAL_REGISTRY_PATH in .env file.')
-            pass
+            return self
 
 
     def predict(self, volume):
         vol_proc = Preprocessor().initialize_from_model(self).transform_vol(volume)
         vol_proc = np.array([vol_proc])
 
-        y_pred = np.round(self.model.predict(vol_proc), 1)
+        y_pred = np.round(self.model.predict(vol_proc,verbose=0), 1)
 
         preds = {}
         for n in range(len(y_pred[0])):
