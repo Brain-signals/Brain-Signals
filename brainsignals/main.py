@@ -13,18 +13,19 @@ from brainsignals.utils import time_print
 
 ### Settings ###
 
-chosen_datasets = [('Controls', 45), # max = 63
-                   ('MRI_PD_vanicek_control', 15), # max = 21
+chosen_datasets = [('camcan_cc700', 15), # max = 653
+                   ('Controls', 10), # max = 63
+                   ('MRI_PD_vanicek_control', 10), # max = 21
                    ('MRI_PD1_control', 10), # max = 15
-                   ('Wonderwall_control', 90), # max = 424
+                   ('Wonderwall_control', 15), # max = 424
 
-                   #('MRI_PD1_parkinsons', 30), # max = 30
-                   #('MRI_PD_vanicek_parkinsons', 20), # max = 20
+                   ('MRI_PD1_parkinsons', 30), # max = 30
+                   ('MRI_PD_vanicek_parkinsons', 20), # max = 20
 
-                   ('Wonderwall_alzheimers', 160), # max = 197
+                   ('Wonderwall_alzheimers', 55), # max = 197
                   ]
 
-target_res = 96
+target_res = 128
 slicing_bot = 0.4
 slicing_top=0.1
 dataset_verbose=1

@@ -19,8 +19,8 @@ from brainsignals.utils import time_print
 
 ctrl_datasets = [('Controls',2), # max = 63
                  ('MRI_PD_vanicek_control',2), # max = 21
-                 ('MRI_PD1_control',2), # max = 15
-                 ('Wonderwall_control',2)] # max = 424
+                 ('MRI_PD1_control',3), # max = 15
+                 ('Wonderwall_control',3)] # max = 424
 
 park_datasets = [('MRI_PD1_parkinsons',4), # max = 30
                  ('MRI_PD_vanicek_parkinsons',4)] # max = 20
