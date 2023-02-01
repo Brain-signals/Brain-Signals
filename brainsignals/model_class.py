@@ -25,6 +25,7 @@ class Model:
 
     def initialize_model(self, preprocessor, learning_rate = 0.0005):
 
+        # create model following prepocessor's settings
         self.dimensions = preprocessor.dimensions
         self.number_of_classes = preprocessor.number_of_classes
         self.diagnostics = preprocessor.diagnostics
@@ -66,10 +67,14 @@ class Model:
                     validation_split = 0.3,
                     verbose = 2):
 
+        # this function trains a model following all settings inputed as arguments
+
         start = time.perf_counter()
 
         try:
-            self.dimensions # just to check if model has been initialized
+            #  just to check if model has been initialized
+            self.dimensions
+            # otherwise, goes to except
 
             self.epochs = epochs
             self.patience = patience
@@ -84,6 +89,7 @@ class Model:
 
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=validation_split, shuffle=True)
 
+            # call the tensorflow model.fit function
             history = self.model.fit(X_train, y_train,
                                      validation_data=(X_test,y_test), epochs=epochs,
                                      batch_size=batch_size, verbose=verbose,

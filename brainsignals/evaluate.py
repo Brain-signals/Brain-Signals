@@ -32,8 +32,11 @@ alz_datasets = [('Wonderwall_alzheimers',7)] # max = 197
 
 def evaluate_model(model_id, max_run = 20):
 
+    # this function takes a model and evaluate it n times trough the score_model function
+
     start = time.perf_counter()
 
+    # load the model
     model_id = model_id[-20:]
     model_path = os.path.join(os.environ.get('LOCAL_REGISTRY_PATH'), model_id)
 
@@ -45,6 +48,8 @@ def evaluate_model(model_id, max_run = 20):
     print('')
 
     while run <= max_run:
+    # makes n runs of evaluation
+
         print(' '*40, end='\r', flush=True)
         print(f'Evaluation : run {run} / {max_run}', end='\r', flush=True)
         results.append(score_model(model))
@@ -53,11 +58,13 @@ def evaluate_model(model_id, max_run = 20):
     print('Evaluation completed.', ' '*10, end="\r")
     print('\n')
 
+    # display results from each evaluation
     run = 0
     for result in results:
         print(f'for run {run+1} evalution was {result}')
         run += 1
 
+    # and the average results of all runs
     for key in results[0].keys():
         tot = 0
         for r in range(max_run):
@@ -71,10 +78,15 @@ def evaluate_model(model_id, max_run = 20):
     pass
 
 
-def score_model(model, dataset_verbose=0, score_verbose=0):
+def score_model(model, dataset_verbose=0, score_verbose=1):
+
+    # explores a model's dagnostics and create an y_test (following the settings inputed above)
+    # then use the tensorflow evaluate function to score it
 
     preproc = Preprocessor().initialize_from_model(model)
 
+    # after creation of the preprocessor (following model's parameters)
+    # create a dataset following settings inouted above
     if 'diagnostic_Healthy' in model.diagnostics:
 
         for dataset in ctrl_datasets:

@@ -4,6 +4,7 @@ import numpy as np
 import os
 import pandas as pd
 import time
+from tqdm import tqdm
 from sklearn.preprocessing import OneHotEncoder
 
 
@@ -83,11 +84,10 @@ class Preprocessor:
         if limit != 0 :
             file_names = file_names.sample(n=limit)
 
-        if verbose > 0:
-            print(f'\nOpening {dataset_name} dataset...')
+        print(f'\nOpening {dataset_name} dataset...')
         X_tmp = []
         n = 1
-        for index, row in file_names.iterrows():
+        for index, row in tqdm(file_names.iterrows(), total=len(file_names), ncols=100):
 
             self.files_used.append(row.file_name)
 
