@@ -30,3 +30,6 @@ help:
 	@echo "    to completely uninstall VAPE-MRI, and its requirements, use hard_uninstall"
 
 	@echo ""
+
+toto:
+	@echo "c'est toto, il va à la boulangerie"
